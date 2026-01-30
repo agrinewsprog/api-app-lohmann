@@ -1,0 +1,243 @@
+[
+  {
+    "productImagePath": "",
+    "id": "31303936-3431-3235-3036-333036323038",
+    "name": "Brown Nick Layers",
+    "productgroup": "CM",
+    "color": "brown",
+    "producttype": "",
+    "client": "CLIENT_HN",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "31303936-3430-3838-3734-353832393637",
+    "name": "Brown Nick PS",
+    "productgroup": "PS",
+    "color": "brown",
+    "producttype": "",
+    "client": "CLIENT_HN",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "31303936-3437-3335-3331-373035343232",
+    "name": "Coral Layers",
+    "productgroup": "CM",
+    "color": "tinted",
+    "producttype": "",
+    "client": "CLIENT_HN",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "31303936-3432-3234-3831-303234393035",
+    "name": "Crystal Nick Layers",
+    "productgroup": "CM",
+    "color": "white",
+    "producttype": "",
+    "client": "CLIENT_HN",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "746ddcb4-4a17-11e8-8800-005056a3b10f",
+    "name": "LOHMANN Brown Classic Layers",
+    "productgroup": "CM",
+    "color": "brown",
+    "producttype": "Classic",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "31383431-3130-3133-3233-383430383237",
+    "name": "LOHMANN Brown Classic PS",
+    "productgroup": "PS",
+    "color": "brown",
+    "producttype": "Classic",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "c2fdc088-4a17-11e8-a297-005056a3b10f",
+    "name": "LOHMANN Brown Extra Layers",
+    "productgroup": "CM",
+    "color": "brown",
+    "producttype": "Extra",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "a69a222e-4a17-11e8-91f6-005056a3b10f",
+    "name": "LOHMANN Brown Lite Layers",
+    "productgroup": "CM",
+    "color": "brown",
+    "producttype": "Lite",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "eee405da-4a18-11e8-a791-005056a3b10f",
+    "name": "LOHMANN Brown Lite PS",
+    "productgroup": "PS",
+    "color": "brown",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "31353938-3333-3636-3631-353236343735",
+    "name": "LOHMANN Brown Plus Layers",
+    "productgroup": "CM",
+    "color": "brown",
+    "producttype": "",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "cageFree"
+  },
+  {
+    "productImagePath": "",
+    "id": "dd8a0c72-4a17-11e8-831f-005056a3b10f",
+    "name": "LOHMANN LSL Classic Layers",
+    "productgroup": "CM",
+    "color": "white",
+    "producttype": "Classic",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "0ed3d6fe-4a19-11e8-a0ef-005056a3b10f",
+    "name": "LOHMANN LSL Classic PS",
+    "productgroup": "PS",
+    "color": "white",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "1d2c81fc-4a18-11e8-ba04-005056a3b10f",
+    "name": "LOHMANN LSL Extra Layers",
+    "productgroup": "CM",
+    "color": "white",
+    "producttype": "Extra",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "cage"
+  },
+  {
+    "productImagePath": "",
+    "id": "04f6a810-4a18-11e8-8584-005056a3b10f",
+    "name": "LOHMANN LSL Lite Layers",
+    "productgroup": "CM",
+    "color": "white",
+    "producttype": "Lite",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "261f8c2c-4a19-11e8-b9e0-005056a3b10f",
+    "name": "LOHMANN LSL Lite PS",
+    "productgroup": "PS",
+    "color": "white",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "8f22f476-4a18-11e8-bd4f-005056a3b10f",
+    "name": "LOHMANN Sandy Layers",
+    "productgroup": "CM",
+    "color": "tinted",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "50f78760-4a19-11e8-af61-005056a3b10f",
+    "name": "LOHMANN Sandy PS",
+    "productgroup": "PS",
+    "color": "white",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "4adbb6f4-4a18-11e8-a6fc-005056a3b10f",
+    "name": "LOHMANN Silver Layers",
+    "productgroup": "CM",
+    "color": "brown",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "3999faee-4a19-11e8-80f3-005056a3b10f",
+    "name": "LOHMANN Silver PS",
+    "productgroup": "PS",
+    "color": "brown",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "374ae740-4a18-11e8-9932-005056a3b10f",
+    "name": "LOHMANN Tradition Layers",
+    "productgroup": "CM",
+    "color": "brown",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "fef2e43c-4a18-11e8-95ec-005056a3b10f",
+    "name": "LOHMANN Tradition PS",
+    "productgroup": "PS",
+    "color": "brown",
+    "client": "CLIENT_LTZ",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "31303936-3339-3437-3939-393436353530",
+    "name": "Nick Chick Layers",
+    "productgroup": "CM",
+    "color": "white",
+    "producttype": "",
+    "client": "CLIENT_HN",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "31303936-3338-3335-3235-303635313131",
+    "name": "Nick Chick PS",
+    "productgroup": "PS",
+    "color": "white",
+    "producttype": "",
+    "client": "CLIENT_HN",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "31303936-3431-3737-3330-343735303436",
+    "name": "Super Nick Layers",
+    "productgroup": "CM",
+    "color": "white",
+    "producttype": "",
+    "client": "CLIENT_HN",
+    "kindofattitude": "both"
+  },
+  {
+    "productImagePath": "",
+    "id": "37313930-3536-3530-3538-353239323936",
+    "name": "Super Nick PS ",
+    "productgroup": "PS",
+    "color": "white",
+    "producttype": "",
+    "client": "CLIENT_HN",
+    "kindofattitude": "both"
+  }
+]

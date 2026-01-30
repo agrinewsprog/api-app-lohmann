@@ -1,0 +1,668 @@
+{
+  "uniformitySetup": [
+    {
+      "week": 0,
+      "minWeight": 52,
+      "interval": 58,
+      "maxWeight": 4927,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"4054\":0,\"4692\":0,\"3880\":0,\"2430\":0,\"2198\":0,\"3242\":0,\"4170\":0,\"110\":0,\"1734\":0,\"2546\":0,\"3358\":0,\"4808\":0,\"632\":0,\"1212\":0,\"1850\":0,\"2024\":0,\"2662\":0,\"516\":0,\"4402\":0,\"1618\":0,\"3996\":0,\"52\":0,\"4924\":0,\"4460\":0,\"1908\":0,\"4344\":0,\"1154\":0,\"1792\":0,\"3010\":0,\"1270\":0,\"284\":0,\"2082\":0,\"1502\":0,\"168\":0,\"2314\":0,\"2952\":0,\"400\":0,\"3126\":0,\"1386\":0,\"4576\":0,\"922\":0,\"3764\":0,\"806\":0,\"2836\":0,\"3648\":0,\"4112\":0,\"4750\":0,\"3068\":0,\"1560\":0,\"2372\":0,\"690\":0,\"3184\":0,\"3416\":0,\"574\":0,\"1038\":0,\"1676\":0,\"3938\":0,\"2720\":0,\"2488\":0,\"3532\":0,\"458\":0,\"4228\":0,\"4866\":0,\"2604\":0,\"4286\":0,\"3474\":0,\"1096\":0,\"2140\":0,\"3590\":0,\"4518\":0,\"342\":0,\"980\":0,\"2778\":0,\"3706\":0,\"1444\":0,\"226\":0,\"864\":0,\"2256\":0,\"2894\":0,\"3300\":0,\"748\":0,\"4634\":0,\"3822\":0,\"1328\":0,\"1966\":0}",
+      "totalChicken": 9
+    },
+    {
+      "week": 1,
+      "minWeight": 43,
+      "interval": 1,
+      "maxWeight": 77,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"44\":0,\"66\":0,\"45\":0,\"67\":0,\"46\":0,\"68\":0,\"47\":0,\"69\":0,\"48\":0,\"49\":0,\"70\":0,\"71\":0,\"50\":0,\"72\":0,\"51\":0,\"73\":0,\"52\":0,\"74\":0,\"53\":0,\"75\":0,\"54\":0,\"76\":0,\"55\":0,\"77\":0,\"56\":0,\"57\":0,\"58\":0,\"59\":0,\"60\":0,\"61\":0,\"62\":0,\"63\":0,\"64\":0,\"43\":0,\"65\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 2,
+      "minWeight": 126,
+      "interval": 2,
+      "maxWeight": 134,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"132\":0,\"134\":0,\"126\":0,\"128\":0,\"130\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 3,
+      "minWeight": 189,
+      "interval": 3,
+      "maxWeight": 201,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"198\":0,\"189\":0,\"201\":0,\"192\":0,\"195\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 4,
+      "minWeight": 265,
+      "interval": 4,
+      "maxWeight": 281,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"265\":0,\"277\":0,\"269\":0,\"281\":0,\"273\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 5,
+      "minWeight": 355,
+      "interval": 5,
+      "maxWeight": 377,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"375\":1,\"365\":8,\"355\":0,\"260\":3,\"370\":2,\"360\":8}",
+      "totalChicken": 22
+    },
+    {
+      "week": 6,
+      "minWeight": 455,
+      "interval": 6,
+      "maxWeight": 483,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"473\":1,\"455\":2,\"467\":1,\"479\":1,\"461\":1}",
+      "totalChicken": 6
+    },
+    {
+      "week": 7,
+      "minWeight": 556,
+      "interval": 7,
+      "maxWeight": 590,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"584\":0,\"563\":0,\"577\":0,\"556\":0,\"570\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 8,
+      "minWeight": 657,
+      "interval": 8,
+      "maxWeight": 697,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"673\":0,\"697\":0,\"665\":0,\"689\":0,\"657\":0,\"681\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 9,
+      "minWeight": 754,
+      "interval": 10,
+      "maxWeight": 800,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"794\":0,\"784\":0,\"774\":0,\"764\":0,\"754\":3}",
+      "totalChicken": 3
+    },
+    {
+      "week": 10,
+      "minWeight": 815,
+      "interval": 10,
+      "maxWeight": 865,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"865\":0,\"855\":0,\"845\":0,\"835\":0,\"825\":0,\"815\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 11,
+      "minWeight": 874,
+      "interval": 11,
+      "maxWeight": 928,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"907\":0,\"918\":0,\"874\":0,\"885\":0,\"896\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 12,
+      "minWeight": 953,
+      "interval": 12,
+      "maxWeight": 1011,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"953\":0,\"1001\":0,\"965\":0,\"977\":0,\"989\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 13,
+      "minWeight": 1018,
+      "interval": 13,
+      "maxWeight": 1080,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"1018\":0,\"1057\":0,\"1044\":0,\"1031\":0,\"1070\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 14,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 15,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 16,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 17,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 18,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 19,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 20,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 21,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 22,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 23,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 24,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 25,
+      "minWeight": 1865,
+      "interval": 23,
+      "maxWeight": 1980,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"1888\":0,\"1865\":0,\"1980\":0,\"1957\":0,\"1934\":0,\"1911\":0}",
+      "totalChicken": 0
+    },
+    {
+      "week": 26,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 27,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 28,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 29,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 30,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 31,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 32,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 33,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 34,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 35,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 36,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 37,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 38,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 39,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 40,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 41,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 42,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 43,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 44,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 45,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 46,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 47,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 48,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 49,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 50,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 51,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 52,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 53,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 54,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 55,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 56,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 57,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 58,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 59,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 60,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 61,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 62,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 63,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 64,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 65,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 66,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 67,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 68,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 69,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 70,
+      "minWeight": 0,
+      "interval": 1,
+      "maxWeight": 0,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{}",
+      "totalChicken": 0
+    },
+    {
+      "week": 71,
+      "minWeight": 1794,
+      "interval": 22,
+      "maxWeight": 1904,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"1794\":1,\"1860\":0,\"1882\":0,\"1816\":1,\"1838\":1,\"1904\":0}",
+      "totalChicken": 3
+    },
+    {
+      "week": 72,
+      "minWeight": 1795,
+      "interval": 23,
+      "maxWeight": 1906,
+      "uniformityUuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C",
+      "weights": "{\"1887\":0,\"1864\":0,\"1841\":0,\"1795\":0,\"1818\":0}",
+      "totalChicken": 0
+    }
+  ],
+  "uniformity": {
+    "productId": "31303936-3431-3235-3036-333036323038",
+    "measureUnit": "g",
+    "userId": "33393530-3337-3238-3638-393137393831",
+    "flockId": 684,
+    "uuid": "5CNHWKOS-kQ99c4rs-dAi5MIcW-xlCmfp9C"
+  }
+}
