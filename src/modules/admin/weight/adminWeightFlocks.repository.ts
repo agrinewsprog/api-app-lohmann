@@ -26,8 +26,8 @@ export class AdminWeightFlocksRepository {
       params.push(`%${search}%`);
     }
 
-    sql += ' ORDER BY name ASC LIMIT ? OFFSET ?';
-    params.push(pageSize, (page - 1) * pageSize);
+    const offset = (page - 1) * pageSize;
+    sql += ` ORDER BY name ASC LIMIT ${pageSize} OFFSET ${offset}`;
 
     const [rows] = await query<WeightFlock[] & RowDataPacket[]>(sql, params);
     return rows;

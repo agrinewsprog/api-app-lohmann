@@ -1,12 +1,18 @@
-import { ProductionFlocksRepository } from '../flocks/productionFlocks.repository';
-import { AppError } from '../../../middlewares/errorHandler';
-import { getProductById, getStandardsByProductId } from '../products/productionProducts.loader';
-import { PlanningExecuteResponse, PlanningRow } from './productionPlanning.types';
+import { ProductionFlocksRepository } from "../flocks/productionFlocks.repository";
+import { AppError } from "../../../middlewares/errorHandler";
+import {
+  getProductById,
+  getStandardsByProductId,
+} from "../products/productionProducts.loader";
+import {
+  PlanningExecuteResponse,
+  PlanningRow,
+} from "./productionPlanning.types";
 import {
   formatISOWeekPeriod,
   addDays,
   calculateEggsPeriod,
-} from './productionPlanning.utils';
+} from "./productionPlanning.utils";
 
 export class ProductionPlanningService {
   private flocksRepository: ProductionFlocksRepository;
@@ -15,31 +21,37 @@ export class ProductionPlanningService {
     this.flocksRepository = new ProductionFlocksRepository();
   }
 
-  async executePlan(flockId: number, userId: number): Promise<PlanningExecuteResponse> {
+  async executePlan(
+    flockId: number,
+    userId: number,
+  ): Promise<PlanningExecuteResponse> {
     // Load flock from DB
-    const flock = await this.flocksRepository.findByIdAndUserId(flockId, userId);
+    const flock = await this.flocksRepository.findByIdAndUserId(
+      flockId,
+      userId,
+    );
 
     if (!flock) {
-      throw new AppError(404, 'Flock not found');
+      throw new AppError(404, "Flock not found");
     }
 
     if (!flock.hatch_date) {
-      throw new AppError(400, 'Flock does not have a hatch date set');
+      throw new AppError(400, "Flock does not have a hatch date set");
     }
 
     if (!flock.product_id) {
-      throw new AppError(400, 'Flock does not have a product assigned');
+      throw new AppError(400, "Flock does not have a product assigned");
     }
 
     // Load product and standards
     const product = getProductById(flock.product_id);
     if (!product) {
-      throw new AppError(400, 'Product not found for this flock');
+      throw new AppError(400, "Product not found for this flock");
     }
 
     const standards = getStandardsByProductId(flock.product_id);
     if (!standards) {
-      throw new AppError(400, 'Standards not found for the assigned product');
+      throw new AppError(400, "Standards not found for the assigned product");
     }
 
     // Create standards map for quick lookup by week
@@ -68,19 +80,22 @@ export class ProductionPlanningService {
       // Calculate eggs for this period
       const eggs = calculateEggsPeriod(hensHoused, eggsPercentage);
 
-      rows.push({
-        period,
-        weekIndex,
-        hensHoused,
-        eggs,
-      });
+      // Only include rows where eggs > 0
+      if (eggs > 0) {
+        rows.push({
+          period,
+          weekIndex,
+          hensHoused,
+          eggs,
+        });
+      }
     }
 
     return {
       flock: {
         id: flock.id,
         name: flock.name,
-        hatchDate: flock.hatch_date.toISOString().split('T')[0],
+        hatchDate: flock.hatch_date.toISOString().split("T")[0],
         hensHoused: flock.hens_housed,
         productionPeriod: flock.production_period,
       },

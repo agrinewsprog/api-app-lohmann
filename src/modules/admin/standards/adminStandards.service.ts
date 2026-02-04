@@ -45,7 +45,7 @@ export class AdminStandardsService {
     const malePoints: (GrowthPoint & { id: number })[] = [];
 
     for (const g of allGrowthData) {
-      const point = {
+      const point: any = {
         id: g.id,
         week: g.week,
         min: g.min_value,
@@ -54,6 +54,22 @@ export class AdminStandardsService {
       };
 
       if (g.sex === "female") {
+        // Add production standards data for females
+        point.livability = g.livability;
+        point.hhPctProduction = g.hh_pct_production;
+        point.minHdPctProduction = g.min_hd_pct_production;
+        point.hdPctProduction = g.hd_pct_production;
+        point.maxHdPctProduction = g.max_hd_pct_production;
+        point.ehhWeek = g.ehh_week;
+        point.ehhCum = g.ehh_cum;
+        point.pctHatchingEggs = g.pct_hatching_eggs;
+        point.heWeek = g.he_week;
+        point.heCum = g.he_cum;
+        point.totalPctHatch = g.total_pct_hatch;
+        point.saleablePctHatch = g.saleable_pct_hatch;
+        point.saleableChicksWeek = g.saleable_chicks_week;
+        point.saleableChicksCum = g.saleable_chicks_cum;
+        point.eggWeightWeek = g.egg_weight_week;
         femalePoints.push(point);
       } else {
         malePoints.push(point);

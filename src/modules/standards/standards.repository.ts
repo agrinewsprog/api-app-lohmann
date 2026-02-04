@@ -47,10 +47,31 @@ export class StandardsRepository {
 
   async findGrowthByProduct(productId: number): Promise<StandardsGrowth[]> {
     const sql = `
-      SELECT id, product_id, week, sex, min_value, avg_value, max_value, created_at, updated_at
+      SELECT id, product_id, week, sex, min_value, avg_value, max_value,
+             livability, hh_pct_production, min_hd_pct_production,
+             hd_pct_production, max_hd_pct_production, ehh_week,
+             ehh_cum, pct_hatching_eggs, he_week, he_cum,
+             total_pct_hatch, saleable_pct_hatch, saleable_chicks_week,
+             saleable_chicks_cum, egg_weight_week, created_at, updated_at
       FROM standards_growth
       WHERE product_id = ?
       ORDER BY week ASC, sex ASC
+    `;
+    const [rows] = await query<StandardsGrowth[] & RowDataPacket[]>(sql, [productId]);
+    return rows;
+  }
+
+  async findProductionStandardsByProduct(productId: number): Promise<StandardsGrowth[]> {
+    const sql = `
+      SELECT id, product_id, week, sex,
+             livability, hh_pct_production, min_hd_pct_production,
+             hd_pct_production, max_hd_pct_production, ehh_week,
+             ehh_cum, pct_hatching_eggs, he_week, he_cum,
+             total_pct_hatch, saleable_pct_hatch, saleable_chicks_week,
+             saleable_chicks_cum, egg_weight_week, created_at, updated_at
+      FROM standards_growth
+      WHERE product_id = ? AND sex = 'female'
+      ORDER BY week ASC
     `;
     const [rows] = await query<StandardsGrowth[] & RowDataPacket[]>(sql, [productId]);
     return rows;

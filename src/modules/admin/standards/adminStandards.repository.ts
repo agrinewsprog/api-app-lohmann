@@ -5,7 +5,7 @@ import { StandardsGrowth } from "../../standards/standards.types";
 export class AdminStandardsRepository {
   async findGrowthById(id: number): Promise<StandardsGrowth | null> {
     const sql = `
-      SELECT id, product_id, week, sex, min_value, avg_value, max_value, created_at, updated_at
+      SELECT *
       FROM standards_growth
       WHERE id = ?
     `;

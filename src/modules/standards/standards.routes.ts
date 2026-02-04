@@ -15,6 +15,12 @@ router.get(
   standardsController.getGrowth,
 );
 
+// GET /api/standards/products/:id/production - Get production standards by product ID
+router.get(
+  "/products/:id/standards",
+  standardsController.getProductionStandards,
+);
+
 router.post(
   "/import/growth",
   authenticateJWT,

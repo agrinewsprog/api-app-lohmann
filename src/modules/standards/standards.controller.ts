@@ -99,4 +99,31 @@ export class StandardsController {
       next(error);
     }
   };
+
+  getProductionStandards = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const productId = parseInt(req.params.id, 10);
+
+      if (isNaN(productId)) {
+        res.status(400).json({
+          success: false,
+          message: "Invalid product ID",
+        });
+        return;
+      }
+
+      const result = await this.standardsService.getProductionStandards(productId);
+
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
