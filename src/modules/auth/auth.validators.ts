@@ -1,58 +1,83 @@
-import { body } from 'express-validator';
+import { body } from "express-validator";
 
 export const registerValidation = [
-  body('fullname')
+  body("fullname")
     .trim()
     .notEmpty()
-    .withMessage('Full name is required')
+    .withMessage("Full name is required")
     .isLength({ min: 2, max: 150 })
-    .withMessage('Full name must be between 2 and 150 characters'),
+    .withMessage("Full name must be between 2 and 150 characters"),
 
-  body('email')
+  body("email")
     .trim()
     .notEmpty()
-    .withMessage('Email is required')
+    .withMessage("Email is required")
     .isEmail()
-    .withMessage('Invalid email format')
+    .withMessage("Invalid email format")
     .normalizeEmail()
     .isLength({ max: 190 })
-    .withMessage('Email must not exceed 190 characters'),
+    .withMessage("Email must not exceed 190 characters"),
 
-  body('password')
+  body("password")
     .notEmpty()
-    .withMessage('Password is required')
+    .withMessage("Password is required")
     .isLength({ min: 8 })
-    .withMessage('Password must be at least 8 characters long')
+    .withMessage("Password must be at least 8 characters long")
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
-    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number')
+    .withMessage(
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+    ),
 ];
 
 export const loginValidation = [
-  body('email')
+  body("email")
     .trim()
     .notEmpty()
-    .withMessage('Email is required')
+    .withMessage("Email is required")
     .isEmail()
-    .withMessage('Invalid email format')
+    .withMessage("Invalid email format")
     .normalizeEmail(),
 
-  body('password')
-    .notEmpty()
-    .withMessage('Password is required')
+  body("password").notEmpty().withMessage("Password is required"),
 ];
 
 export const refreshTokenValidation = [
-  body('refreshToken')
+  body("refreshToken")
     .notEmpty()
-    .withMessage('Refresh token is required')
+    .withMessage("Refresh token is required")
     .isString()
-    .withMessage('Refresh token must be a string')
+    .withMessage("Refresh token must be a string"),
 ];
 
 export const logoutValidation = [
-  body('refreshToken')
+  body("refreshToken")
     .notEmpty()
-    .withMessage('Refresh token is required')
+    .withMessage("Refresh token is required")
     .isString()
-    .withMessage('Refresh token must be a string')
+    .withMessage("Refresh token must be a string"),
+];
+
+export const updateProfileValidation = [
+  body("fullname")
+    .trim()
+    .notEmpty()
+    .withMessage("Full name is required")
+    .isLength({ min: 2, max: 150 })
+    .withMessage("Full name must be between 2 and 150 characters"),
+];
+
+export const changePasswordValidation = [
+  body("currentPassword")
+    .notEmpty()
+    .withMessage("Current password is required"),
+
+  body("newPassword")
+    .notEmpty()
+    .withMessage("New password is required")
+    .isLength({ min: 8 })
+    .withMessage("New password must be at least 8 characters long")
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage(
+      "New password must contain at least one uppercase letter, one lowercase letter, and one number",
+    ),
 ];

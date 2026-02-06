@@ -1,17 +1,19 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { AuthRepository } from './auth.repository';
-import { AppError } from '../../middlewares/errorHandler';
-import { env } from '../../config/env';
-import { hashToken } from '../../utils/crypto';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { AuthRepository } from "./auth.repository";
+import { AppError } from "../../middlewares/errorHandler";
+import { env } from "../../config/env";
+import { hashToken } from "../../utils/crypto";
 import {
   RegisterRequest,
   LoginRequest,
   AuthResponse,
   RefreshTokenResponse,
-  sanitizeUser
-} from './auth.types';
-import { JwtPayload } from '../../middlewares/auth';
+  UpdateProfileRequest,
+  ChangePasswordRequest,
+  sanitizeUser,
+} from "./auth.types";
+import { JwtPayload } from "../../middlewares/auth";
 
 export class AuthService {
   private authRepository: AuthRepository;
@@ -21,17 +23,17 @@ export class AuthService {
     this.authRepository = new AuthRepository();
   }
 
-  private generateAccessToken(userId: number, role: 'admin' | 'user'): string {
+  private generateAccessToken(userId: number, role: "admin" | "user"): string {
     const payload: JwtPayload = { id: userId, role };
     return jwt.sign(payload, env.JWT_ACCESS_SECRET, {
-      expiresIn: env.JWT_ACCESS_EXPIRES_IN as string
+      expiresIn: env.JWT_ACCESS_EXPIRES_IN as string,
     } as jwt.SignOptions);
   }
 
-  private generateRefreshToken(userId: number, role: 'admin' | 'user'): string {
+  private generateRefreshToken(userId: number, role: "admin" | "user"): string {
     const payload: JwtPayload = { id: userId, role };
     return jwt.sign(payload, env.JWT_REFRESH_SECRET, {
-      expiresIn: env.JWT_REFRESH_EXPIRES_IN as string
+      expiresIn: env.JWT_REFRESH_EXPIRES_IN as string,
     } as jwt.SignOptions);
   }
 
@@ -40,7 +42,7 @@ export class AuthService {
     const match = expiresIn.match(/^(\d+)([smhd])$/);
 
     if (!match) {
-      throw new Error('Invalid JWT_REFRESH_EXPIRES_IN format');
+      throw new Error("Invalid JWT_REFRESH_EXPIRES_IN format");
     }
 
     const value = parseInt(match[1], 10);
@@ -49,16 +51,16 @@ export class AuthService {
     const now = new Date();
 
     switch (unit) {
-      case 's':
+      case "s":
         return new Date(now.getTime() + value * 1000);
-      case 'm':
+      case "m":
         return new Date(now.getTime() + value * 60 * 1000);
-      case 'h':
+      case "h":
         return new Date(now.getTime() + value * 60 * 60 * 1000);
-      case 'd':
+      case "d":
         return new Date(now.getTime() + value * 24 * 60 * 60 * 1000);
       default:
-        throw new Error('Invalid time unit in JWT_REFRESH_EXPIRES_IN');
+        throw new Error("Invalid time unit in JWT_REFRESH_EXPIRES_IN");
     }
   }
 
@@ -66,7 +68,7 @@ export class AuthService {
     const existingUser = await this.authRepository.findUserByEmail(data.email);
 
     if (existingUser) {
-      throw new AppError(409, 'Email already registered');
+      throw new AppError(409, "Email already registered");
     }
 
     const passwordHash = await bcrypt.hash(data.password, this.SALT_ROUNDS);
@@ -75,13 +77,13 @@ export class AuthService {
       data.fullname,
       data.email,
       passwordHash,
-      'user'
+      "user",
     );
 
     const user = await this.authRepository.findUserById(userId);
 
     if (!user) {
-      throw new AppError(500, 'Failed to create user');
+      throw new AppError(500, "Failed to create user");
     }
 
     const accessToken = this.generateAccessToken(user.id, user.role);
@@ -95,7 +97,7 @@ export class AuthService {
     return {
       user: sanitizeUser(user),
       accessToken,
-      refreshToken
+      refreshToken,
     };
   }
 
@@ -103,13 +105,16 @@ export class AuthService {
     const user = await this.authRepository.findUserByEmail(data.email);
 
     if (!user) {
-      throw new AppError(401, 'Invalid email or password');
+      throw new AppError(401, "Invalid email or password");
     }
 
-    const isPasswordValid = await bcrypt.compare(data.password, user.password_hash);
+    const isPasswordValid = await bcrypt.compare(
+      data.password,
+      user.password_hash,
+    );
 
     if (!isPasswordValid) {
-      throw new AppError(401, 'Invalid email or password');
+      throw new AppError(401, "Invalid email or password");
     }
 
     const accessToken = this.generateAccessToken(user.id, user.role);
@@ -123,7 +128,7 @@ export class AuthService {
     return {
       user: sanitizeUser(user),
       accessToken,
-      refreshToken
+      refreshToken,
     };
   }
 
@@ -134,16 +139,16 @@ export class AuthService {
       decoded = jwt.verify(refreshToken, env.JWT_REFRESH_SECRET) as JwtPayload;
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        throw new AppError(401, 'Refresh token has expired');
+        throw new AppError(401, "Refresh token has expired");
       }
-      throw new AppError(401, 'Invalid refresh token');
+      throw new AppError(401, "Invalid refresh token");
     }
 
     const tokenHash = hashToken(refreshToken);
     const storedToken = await this.authRepository.findRefreshToken(tokenHash);
 
     if (!storedToken) {
-      throw new AppError(401, 'Invalid or revoked refresh token');
+      throw new AppError(401, "Invalid or revoked refresh token");
     }
 
     await this.authRepository.revokeRefreshToken(tokenHash);
@@ -151,7 +156,7 @@ export class AuthService {
     const user = await this.authRepository.findUserById(decoded.id);
 
     if (!user) {
-      throw new AppError(401, 'User not found');
+      throw new AppError(401, "User not found");
     }
 
     const newAccessToken = this.generateAccessToken(user.id, user.role);
@@ -160,11 +165,15 @@ export class AuthService {
     const newTokenHash = hashToken(newRefreshToken);
     const newExpiresAt = this.calculateRefreshTokenExpiry();
 
-    await this.authRepository.storeRefreshToken(user.id, newTokenHash, newExpiresAt);
+    await this.authRepository.storeRefreshToken(
+      user.id,
+      newTokenHash,
+      newExpiresAt,
+    );
 
     return {
       accessToken: newAccessToken,
-      refreshToken: newRefreshToken
+      refreshToken: newRefreshToken,
     };
   }
 
@@ -179,13 +188,71 @@ export class AuthService {
     await this.authRepository.revokeRefreshToken(tokenHash);
   }
 
-  async getMe(userId: number): Promise<AuthResponse['user']> {
+  async getMe(userId: number): Promise<AuthResponse["user"]> {
     const user = await this.authRepository.findUserById(userId);
 
     if (!user) {
-      throw new AppError(404, 'User not found');
+      throw new AppError(404, "User not found");
     }
 
     return sanitizeUser(user);
+  }
+
+  async updateProfile(
+    userId: number,
+    data: UpdateProfileRequest,
+  ): Promise<AuthResponse["user"]> {
+    const user = await this.authRepository.findUserById(userId);
+
+    if (!user) {
+      throw new AppError(404, "User not found");
+    }
+
+    await this.authRepository.updateUserProfile(userId, data.fullname);
+
+    const updatedUser = await this.authRepository.findUserById(userId);
+
+    if (!updatedUser) {
+      throw new AppError(500, "Failed to update user profile");
+    }
+
+    return sanitizeUser(updatedUser);
+  }
+
+  async changePassword(
+    userId: number,
+    data: ChangePasswordRequest,
+  ): Promise<void> {
+    const user = await this.authRepository.findUserById(userId);
+
+    if (!user) {
+      throw new AppError(404, "User not found");
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      data.currentPassword,
+      user.password_hash,
+    );
+
+    if (!isPasswordValid) {
+      throw new AppError(401, "Current password is incorrect");
+    }
+
+    if (data.currentPassword === data.newPassword) {
+      throw new AppError(
+        400,
+        "New password must be different from current password",
+      );
+    }
+
+    const newPasswordHash = await bcrypt.hash(
+      data.newPassword,
+      this.SALT_ROUNDS,
+    );
+
+    await this.authRepository.updateUserPassword(userId, newPasswordHash);
+
+    // Revoke all refresh tokens to force re-login on all devices
+    await this.authRepository.revokeAllUserRefreshTokens(userId);
   }
 }

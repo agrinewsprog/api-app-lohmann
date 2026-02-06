@@ -1,95 +1,49 @@
-export interface Product {
-  id: string;
-  name: string;
-  productgroup: string;
-  color: string;
-  producttype?: string;
-  client: string;
-  kindofattitude: string;
-  productImagePath?: string;
-}
-
-export interface Standard {
-  id: string;
-  week: number;
-  eggs: number;
-  hours: number;
-  PS: boolean;
-  CM: boolean;
-  eggsNoComl: number;
-  feedConsumptionDayG: number;
-  bodyWeightMin: number;
-  bodyWeightMax: number;
-  bodyWeightAverage: number;
-  hatchingEggsCumul: number;
-  eggWeightWeek: number;
-  eggWeightComl: number;
-  hatchingEggsWeek: number;
-  chicksWeek: number;
-  eggsNoHDComl: number;
-  eggsNoHD: number;
-  feedConsumptionComl: number;
-  eggsNoWeek: number;
-  feedConsumptionDayKj: number;
-  totalChicks: number;
-  hatchingEggs: number;
-  chicksComl: number;
-  eggMassHH: number;
-  eggMassHD: number;
-  chicks: number;
-}
-
-export interface ProductWithStandards {
-  product: Product;
-  standards: Standard[];
-}
+import { ProductRow, StandardGrowthRow } from "./productionProducts.repository";
 
 export interface ProductResponse {
-  id: string;
-  name: string;
-  productgroup: string;
-  color: string;
-  producttype: string | null;
-  client: string;
-  kindofattitude: string;
+  id: number;
+  breed: string;
 }
 
 export interface StandardResponse {
   week: number;
-  eggs: number;
-  hours: number;
-  bodyWeightAverage: number;
-  bodyWeightMin: number;
-  bodyWeightMax: number;
-  feedConsumptionDayG: number;
-  eggWeightWeek: number;
-  eggMassHD: number;
-  eggMassHH: number;
+  sex: "female" | "male";
+  hhPctProduction: number | null;
+  hdPctProduction: number | null;
+  heWeek: number | null;
+  heCum: number | null;
+  saleableChicksWeek: number | null;
+  saleableChicksCum: number | null;
+  eggWeightWeek: number | null;
+  livability: number | null;
+  saleablePctHatch: number | null;
+  bodyWeightMin: number | null;
+  bodyWeightAvg: number | null;
+  bodyWeightMax: number | null;
 }
 
-export function sanitizeProduct(product: Product): ProductResponse {
+export function sanitizeProduct(product: ProductRow): ProductResponse {
   return {
     id: product.id,
-    name: product.name,
-    productgroup: product.productgroup,
-    color: product.color,
-    producttype: product.producttype || null,
-    client: product.client,
-    kindofattitude: product.kindofattitude,
+    breed: product.breed,
   };
 }
 
-export function sanitizeStandard(standard: Standard): StandardResponse {
+export function sanitizeStandard(standard: StandardGrowthRow): StandardResponse {
   return {
     week: standard.week,
-    eggs: standard.eggs,
-    hours: standard.hours,
-    bodyWeightAverage: standard.bodyWeightAverage,
-    bodyWeightMin: standard.bodyWeightMin,
-    bodyWeightMax: standard.bodyWeightMax,
-    feedConsumptionDayG: standard.feedConsumptionDayG,
-    eggWeightWeek: standard.eggWeightWeek,
-    eggMassHD: standard.eggMassHD,
-    eggMassHH: standard.eggMassHH,
+    sex: standard.sex,
+    hhPctProduction: standard.hh_pct_production,
+    hdPctProduction: standard.hd_pct_production,
+    heWeek: standard.he_week,
+    heCum: standard.he_cum,
+    saleableChicksWeek: standard.saleable_chicks_week,
+    saleableChicksCum: standard.saleable_chicks_cum,
+    eggWeightWeek: standard.egg_weight_week,
+    livability: standard.livability,
+    saleablePctHatch: standard.saleable_pct_hatch,
+    bodyWeightMin: standard.min_value,
+    bodyWeightAvg: standard.avg_value,
+    bodyWeightMax: standard.max_value,
   };
 }

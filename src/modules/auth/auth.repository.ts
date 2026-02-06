@@ -1,19 +1,24 @@
-import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { query, queryOne } from '../../db/query';
-import { User, RefreshToken } from './auth.types';
+import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import { query, queryOne } from "../../db/query";
+import { User, RefreshToken } from "./auth.types";
 
 export class AuthRepository {
   async createUser(
     fullname: string,
     email: string,
     passwordHash: string,
-    role: 'admin' | 'user' = 'user'
+    role: "admin" | "user" = "user",
   ): Promise<number> {
     const sql = `
       INSERT INTO users (fullname, email, password_hash, role)
       VALUES (?, ?, ?, ?)
     `;
-    const [result] = await query<ResultSetHeader>(sql, [fullname, email, passwordHash, role]);
+    const [result] = await query<ResultSetHeader>(sql, [
+      fullname,
+      email,
+      passwordHash,
+      role,
+    ]);
     return result.insertId;
   }
 
@@ -38,13 +43,17 @@ export class AuthRepository {
   async storeRefreshToken(
     userId: number,
     tokenHash: string,
-    expiresAt: Date
+    expiresAt: Date,
   ): Promise<number> {
     const sql = `
       INSERT INTO refresh_tokens (user_id, token_hash, expires_at)
       VALUES (?, ?, ?)
     `;
-    const [result] = await query<ResultSetHeader>(sql, [userId, tokenHash, expiresAt]);
+    const [result] = await query<ResultSetHeader>(sql, [
+      userId,
+      tokenHash,
+      expiresAt,
+    ]);
     return result.insertId;
   }
 
@@ -81,5 +90,26 @@ export class AuthRepository {
       WHERE expires_at < NOW() OR revoked_at < DATE_SUB(NOW(), INTERVAL 30 DAY)
     `;
     await query(sql);
+  }
+
+  async updateUserProfile(userId: number, fullname: string): Promise<void> {
+    const sql = `
+      UPDATE users
+      SET fullname = ?, updated_at = NOW()
+      WHERE id = ?
+    `;
+    await query(sql, [fullname, userId]);
+  }
+
+  async updateUserPassword(
+    userId: number,
+    passwordHash: string,
+  ): Promise<void> {
+    const sql = `
+      UPDATE users
+      SET password_hash = ?, updated_at = NOW()
+      WHERE id = ?
+    `;
+    await query(sql, [passwordHash, userId]);
   }
 }

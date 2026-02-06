@@ -1,60 +1,51 @@
-import { AppError } from '../../../middlewares/errorHandler';
+import { AppError } from "../../../middlewares/errorHandler";
+import { ProductionProductsRepository } from "./productionProducts.repository";
 import {
   ProductResponse,
   StandardResponse,
   sanitizeProduct,
   sanitizeStandard,
-} from './productionProducts.types';
-import {
-  loadProducts,
-  getProductById,
-  getStandardsByProductId,
-} from './productionProducts.loader';
-
-export interface ListProductsFilters {
-  group?: string;
-  client?: string;
-  color?: string;
-}
+} from "./productionProducts.types";
 
 export class ProductionProductsService {
-  async getAllProducts(filters: ListProductsFilters = {}): Promise<ProductResponse[]> {
-    let products = loadProducts();
+  private repository: ProductionProductsRepository;
 
-    if (filters.group) {
-      products = products.filter(p => p.productgroup === filters.group);
-    }
-    if (filters.client) {
-      products = products.filter(p => p.client === filters.client);
-    }
-    if (filters.color) {
-      products = products.filter(p => p.color === filters.color);
-    }
+  constructor() {
+    this.repository = new ProductionProductsRepository();
+  }
 
+  async getAllProducts(): Promise<ProductResponse[]> {
+    const products = await this.repository.findAll();
     return products.map(sanitizeProduct);
   }
 
-  async getProductById(productId: string): Promise<ProductResponse> {
-    const product = getProductById(productId);
+  async getProductById(productId: number): Promise<ProductResponse> {
+    const product = await this.repository.findById(productId);
 
     if (!product) {
-      throw new AppError(404, 'Product not found');
+      throw new AppError(404, "Product not found");
     }
 
     return sanitizeProduct(product);
   }
 
-  async getProductStandards(productId: string): Promise<StandardResponse[]> {
-    const product = getProductById(productId);
+  async getProductStandards(
+    productId: number,
+    sex: "female" | "male" = "female"
+  ): Promise<StandardResponse[]> {
+    const product = await this.repository.findById(productId);
 
     if (!product) {
-      throw new AppError(404, 'Product not found');
+      throw new AppError(404, "Product not found");
     }
 
-    const standards = getStandardsByProductId(productId);
+    const standards = await this.repository.findStandardsByProductId(
+      productId,
+      sex
+    );
 
-    if (!standards) {
-      throw new AppError(404, 'Standards not found for this product');
+    if (!standards || standards.length === 0) {
+      throw new AppError(404, "Standards not found for this product");
     }
 
     return standards.map(sanitizeStandard);

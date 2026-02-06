@@ -2,6 +2,7 @@ export interface StandardsProduct {
   id: number;
   breed: string;
   color: string;
+  image: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -10,6 +11,7 @@ export interface StandardsProductResponse {
   id: number;
   breed: string;
   color: string;
+  image: string;
 }
 
 export interface StandardsGrowth {
@@ -143,5 +145,6 @@ export function sanitizeProduct(
     id: product.id,
     breed: product.breed,
     color: product.color,
+    image: product.image,
   };
 }

@@ -1,26 +1,23 @@
-import { param, query } from 'express-validator';
+import { param, query } from "express-validator";
 
 export const productIdParamValidation = [
-  param('productId')
+  param("productId")
     .notEmpty()
-    .withMessage('productId is required')
-    .isLength({ min: 1, max: 36 })
-    .withMessage('productId must be a valid string'),
+    .withMessage("productId is required")
+    .isInt({ min: 1 })
+    .withMessage("productId must be a positive integer")
+    .toInt(),
 ];
 
-export const listProductsQueryValidation = [
-  query('group')
+export const getStandardsValidation = [
+  param("productId")
+    .notEmpty()
+    .withMessage("productId is required")
+    .isInt({ min: 1 })
+    .withMessage("productId must be a positive integer")
+    .toInt(),
+  query("sex")
     .optional()
-    .isString()
-    .withMessage('group must be a string'),
-
-  query('client')
-    .optional()
-    .isString()
-    .withMessage('client must be a string'),
-
-  query('color')
-    .optional()
-    .isString()
-    .withMessage('color must be a string'),
+    .isIn(["female", "male"])
+    .withMessage("sex must be either 'female' or 'male'"),
 ];

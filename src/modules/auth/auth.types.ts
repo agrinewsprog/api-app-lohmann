@@ -3,7 +3,7 @@ export interface User {
   fullname: string;
   email: string;
   password_hash: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   created_at: Date;
   updated_at: Date;
 }
@@ -12,7 +12,7 @@ export interface UserResponse {
   id: number;
   fullname: string;
   email: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   created_at: Date;
   updated_at: Date;
 }
@@ -34,6 +34,15 @@ export interface RefreshTokenRequest {
 
 export interface LogoutRequest {
   refreshToken: string;
+}
+
+export interface UpdateProfileRequest {
+  fullname: string;
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
 }
 
 export interface AuthResponse {
@@ -63,6 +72,6 @@ export function sanitizeUser(user: User): UserResponse {
     email: user.email,
     role: user.role,
     created_at: user.created_at,
-    updated_at: user.updated_at
+    updated_at: user.updated_at,
   };
 }
