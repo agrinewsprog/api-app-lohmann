@@ -2,10 +2,12 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { query, queryOne } from '../../../db/query';
 import { WeightFlock, CreateWeightFlockDTO, UpdateWeightFlockDTO } from './weightFlocks.types';
 
+const SELECT_COLUMNS = 'id, user_id, name, location, notes, product_id, hatch_date, created_at, updated_at';
+
 export class WeightFlocksRepository {
   async findAllByUserId(userId: number): Promise<WeightFlock[]> {
     const sql = `
-      SELECT id, user_id, name, location, notes, created_at, updated_at
+      SELECT ${SELECT_COLUMNS}
       FROM weight_flocks
       WHERE user_id = ?
       ORDER BY name ASC
@@ -16,7 +18,7 @@ export class WeightFlocksRepository {
 
   async findByIdAndUserId(id: number, userId: number): Promise<WeightFlock | null> {
     const sql = `
-      SELECT id, user_id, name, location, notes, created_at, updated_at
+      SELECT ${SELECT_COLUMNS}
       FROM weight_flocks
       WHERE id = ? AND user_id = ?
     `;
@@ -25,7 +27,7 @@ export class WeightFlocksRepository {
 
   async findByNameAndUserId(name: string, userId: number): Promise<WeightFlock | null> {
     const sql = `
-      SELECT id, user_id, name, location, notes, created_at, updated_at
+      SELECT ${SELECT_COLUMNS}
       FROM weight_flocks
       WHERE name = ? AND user_id = ?
     `;
@@ -34,14 +36,16 @@ export class WeightFlocksRepository {
 
   async create(userId: number, data: CreateWeightFlockDTO): Promise<WeightFlock> {
     const sql = `
-      INSERT INTO weight_flocks (user_id, name, location, notes)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO weight_flocks (user_id, name, location, notes, product_id, hatch_date)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
     const [result] = await query<ResultSetHeader>(sql, [
       userId,
       data.name,
       data.location || null,
       data.notes || null,
+      data.productId || null,
+      data.hatchDate || null,
     ]);
 
     const created = await this.findByIdAndUserId(result.insertId, userId);
@@ -63,6 +67,14 @@ export class WeightFlocksRepository {
     if (data.notes !== undefined) {
       fields.push('notes = ?');
       values.push(data.notes || null);
+    }
+    if (data.productId !== undefined) {
+      fields.push('product_id = ?');
+      values.push(data.productId ?? null);
+    }
+    if (data.hatchDate !== undefined) {
+      fields.push('hatch_date = ?');
+      values.push(data.hatchDate ?? null);
     }
 
     if (fields.length === 0) {

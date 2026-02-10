@@ -16,6 +16,17 @@ export const createWeightFlockValidation = [
     .optional()
     .isString()
     .withMessage('notes must be a string'),
+
+  body('productId')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('productId must be a positive integer')
+    .toInt(),
+
+  body('hatchDate')
+    .optional()
+    .isISO8601()
+    .withMessage('hatchDate must be a valid date (YYYY-MM-DD)'),
 ];
 
 export const updateWeightFlockValidation = [
@@ -40,6 +51,17 @@ export const updateWeightFlockValidation = [
     .optional()
     .isString()
     .withMessage('notes must be a string'),
+
+  body('productId')
+    .optional({ values: 'null' })
+    .isInt({ min: 1 })
+    .withMessage('productId must be a positive integer')
+    .toInt(),
+
+  body('hatchDate')
+    .optional({ values: 'null' })
+    .isISO8601()
+    .withMessage('hatchDate must be a valid date (YYYY-MM-DD)'),
 ];
 
 export const idParamValidation = [

@@ -1,87 +1,86 @@
-/**
- * Types for the Weight Uniformity beta provider.
- * This is a read-only fixture-based module for testing purposes.
- */
-
-/**
- * Uniformity session metadata
- */
-export interface Uniformity {
-  productId: string;
-  measureUnit: string;
-  userId: string;
-  flockId?: number;
-  uuid: string;
-}
-
-/**
- * Per-week uniformity setup data
- */
-export interface UniformitySetup {
+export interface WeightMeasurement {
+  id: number;
+  flock_id: number;
+  user_id: number;
   week: number;
-  minWeight: number;
-  interval: number;
-  maxWeight: number;
-  uniformityUuid: string;
-  weights: string; // JSON string of weight counts
-  totalChicken: number;
+  sex: 'female' | 'male';
+  weights: number[];
+  sample_count: number;
+  mean_weight: number;
+  std_dev: number;
+  cv: number;
+  uniformity: number;
+  created_at: Date;
+  updated_at: Date;
 }
 
-/**
- * A complete uniformity entry from the fixture file
- */
-export interface UniformityEntry {
-  uniformity: Uniformity;
-  uniformitySetup: UniformitySetup[];
+export interface WeightMeasurementRow {
+  id: number;
+  flock_id: number;
+  user_id: number;
+  week: number;
+  sex: 'female' | 'male';
+  weights: string;
+  sample_count: number;
+  mean_weight: number;
+  std_dev: number;
+  cv: number;
+  uniformity: number;
+  created_at: Date;
+  updated_at: Date;
 }
 
-/**
- * Indexed uniformity entry with week lookup map
- */
-export interface IndexedUniformityEntry extends UniformityEntry {
-  weekMap: Map<number, UniformitySetup>;
+export interface SaveWeekDTO {
+  flockId: number;
+  week: number;
+  sex: 'female' | 'male';
+  weights: number[];
 }
 
-/**
- * Response for GET /api/weight/uniformity
- */
-export interface UniformityResponse {
+export interface StandardInfo {
+  min_value: number;
+  avg_value: number;
+  max_value: number;
+}
+
+export interface WeekResponse {
   success: boolean;
-  uniformity: Uniformity;
-  uniformitySetup: UniformitySetup[];
+  measurement: {
+    flockId: number;
+    week: number;
+    sex: string;
+    weights: number[];
+    sampleCount: number;
+    mean: number;
+    stdDev: number;
+    cv: number;
+    uniformity: number;
+  } | null;
+  standard: StandardInfo | null;
 }
 
-/**
- * Response for GET /api/weight/uniformity/week
- */
-export interface UniformityWeekResponse {
-  success: boolean;
-  uniformity: Uniformity;
-  item: UniformitySetup;
+export interface HistoryItem {
+  week: number;
+  sex: string;
+  sampleCount: number;
+  mean: number;
+  stdDev: number;
+  cv: number;
+  uniformity: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-/**
- * Response for GET /api/weight/uniformity/:uuid
- */
-export interface UniformityByUuidResponse {
+export interface HistoryResponse {
   success: boolean;
-  uniformity: Uniformity;
-  uniformitySetup: UniformitySetup[];
+  flockId: number;
+  items: HistoryItem[];
 }
 
-/**
- * Response for GET /api/weight/uniformity/last
- */
-export interface UniformityLastResponse {
-  success: boolean;
-  uniformityUuid: string;
-}
-
-/**
- * Response for GET /api/weight/uniformity/:uniformityUuid/week
- */
-export interface UniformityWeekByUuidResponse {
-  success: boolean;
-  uniformity: Uniformity;
-  item: UniformitySetup;
+export interface CalculatedStats {
+  sampleCount: number;
+  mean: number;
+  stdDev: number;
+  cv: number;
+  uniformity: number;
 }

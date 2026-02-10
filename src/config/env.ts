@@ -16,8 +16,6 @@ interface EnvConfig {
   JWT_REFRESH_EXPIRES_IN: string;
   CORS_ORIGIN: string;
   NODE_ENV: string;
-  BETA_WEIGHT_PRODUCTS_JSON_PATH: string;
-  BETA_WEIGHT_UNIFORMITY_JSON_PATH: string;
 }
 
 function validateEnv(): EnvConfig {
@@ -31,9 +29,7 @@ function validateEnv(): EnvConfig {
     'JWT_ACCESS_EXPIRES_IN',
     'JWT_REFRESH_SECRET',
     'JWT_REFRESH_EXPIRES_IN',
-    'CORS_ORIGIN',
-    'BETA_WEIGHT_PRODUCTS_JSON_PATH',
-    'BETA_WEIGHT_UNIFORMITY_JSON_PATH'
+    'CORS_ORIGIN'
   ];
 
   const missingVars: string[] = [];
@@ -82,9 +78,7 @@ function validateEnv(): EnvConfig {
     JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET!,
     JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN!,
     CORS_ORIGIN: process.env.CORS_ORIGIN!,
-    NODE_ENV: process.env.NODE_ENV || 'development',
-    BETA_WEIGHT_PRODUCTS_JSON_PATH: process.env.BETA_WEIGHT_PRODUCTS_JSON_PATH!,
-    BETA_WEIGHT_UNIFORMITY_JSON_PATH: process.env.BETA_WEIGHT_UNIFORMITY_JSON_PATH!
+    NODE_ENV: process.env.NODE_ENV || 'development'
   };
 }
 

@@ -1,89 +1,68 @@
-import { query, param, ValidationChain } from 'express-validator';
+import { body, query, ValidationChain } from 'express-validator';
 
-/**
- * Validation for GET /api/weight/uniformity
- * Required: flockId (positive integer), productId (non-empty string)
- */
-export const getUniformityValidation: ValidationChain[] = [
-  query('flockId')
+export const saveWeekValidation: ValidationChain[] = [
+  body('flockId')
     .notEmpty()
-    .withMessage('flockId query parameter is required')
+    .withMessage('flockId is required')
     .isInt({ min: 1 })
     .withMessage('flockId must be a positive integer')
     .toInt(),
-  query('productId')
+
+  body('week')
     .notEmpty()
-    .withMessage('productId query parameter is required')
-    .isString()
-    .withMessage('productId must be a string')
-    .trim()
+    .withMessage('week is required')
+    .isInt({ min: 0 })
+    .withMessage('week must be an integer >= 0')
+    .toInt(),
+
+  body('sex')
+    .notEmpty()
+    .withMessage('sex is required')
+    .isIn(['female', 'male'])
+    .withMessage('sex must be "female" or "male"'),
+
+  body('weights')
+    .isArray({ min: 2 })
+    .withMessage('weights must be an array with at least 2 items'),
+
+  body('weights.*')
+    .isFloat({ gt: 0 })
+    .withMessage('each weight must be a positive number')
+    .toFloat(),
 ];
 
-/**
- * Validation for GET /api/weight/uniformity/week
- * Required: flockId (positive integer), productId (non-empty string), week (integer >= 0)
- */
-export const getUniformityWeekValidation: ValidationChain[] = [
+export const getWeekValidation: ValidationChain[] = [
   query('flockId')
     .notEmpty()
     .withMessage('flockId query parameter is required')
     .isInt({ min: 1 })
     .withMessage('flockId must be a positive integer')
     .toInt(),
-  query('productId')
-    .notEmpty()
-    .withMessage('productId query parameter is required')
-    .isString()
-    .withMessage('productId must be a string')
-    .trim(),
+
   query('week')
     .notEmpty()
     .withMessage('week query parameter is required')
     .isInt({ min: 0 })
     .withMessage('week must be an integer >= 0')
-    .toInt()
-];
+    .toInt(),
 
-/**
- * Validation for GET /api/weight/uniformity/:uuid
- * Required: uuid (non-empty string)
- */
-export const getUniformityByUuidValidation: ValidationChain[] = [
-  param('uuid')
+  query('sex')
     .notEmpty()
-    .withMessage('uuid parameter is required')
-    .isString()
-    .withMessage('uuid must be a string')
-    .trim()
+    .withMessage('sex query parameter is required')
+    .isIn(['female', 'male'])
+    .withMessage('sex must be "female" or "male"'),
 ];
 
-/**
- * Validation for GET /api/weight/uniformity/last
- * Optional: productId (string)
- */
-export const getUniformityLastValidation: ValidationChain[] = [
-  query('productId')
+export const getHistoryValidation: ValidationChain[] = [
+  query('flockId')
+    .notEmpty()
+    .withMessage('flockId query parameter is required')
+    .isInt({ min: 1 })
+    .withMessage('flockId must be a positive integer')
+    .toInt(),
+
+  query('sex')
     .optional()
-    .isString()
-    .withMessage('productId must be a string')
-    .trim()
-];
-
-/**
- * Validation for GET /api/weight/uniformity/:uniformityUuid/week
- * Required: uniformityUuid (non-empty string), week (integer >= 0)
- */
-export const getUniformityWeekByUuidValidation: ValidationChain[] = [
-  param('uniformityUuid')
-    .notEmpty()
-    .withMessage('uniformityUuid parameter is required')
-    .isString()
-    .withMessage('uniformityUuid must be a string')
-    .trim(),
-  query('week')
-    .notEmpty()
-    .withMessage('week query parameter is required')
-    .isInt({ min: 0 })
-    .withMessage('week must be an integer >= 0')
-    .toInt()
+    .isIn(['female', 'male'])
+    .withMessage('sex must be "female" or "male"'),
 ];

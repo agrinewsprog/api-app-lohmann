@@ -1,4 +1,5 @@
 import { WeightFlocksRepository } from './weightFlocks.repository';
+import { StandardsRepository } from '../../standards/standards.repository';
 import { AppError } from '../../../middlewares/errorHandler';
 import {
   WeightFlockResponse,
@@ -9,9 +10,11 @@ import {
 
 export class WeightFlocksService {
   private repository: WeightFlocksRepository;
+  private standardsRepository: StandardsRepository;
 
   constructor() {
     this.repository = new WeightFlocksRepository();
+    this.standardsRepository = new StandardsRepository();
   }
 
   async getAllFlocks(userId: number): Promise<WeightFlockResponse[]> {
@@ -36,6 +39,10 @@ export class WeightFlocksService {
       throw new AppError(409, 'A flock with this name already exists');
     }
 
+    if (data.productId) {
+      await this.validateProductId(data.productId);
+    }
+
     const flock = await this.repository.create(userId, data);
     return sanitizeWeightFlock(flock);
   }
@@ -54,6 +61,10 @@ export class WeightFlocksService {
       }
     }
 
+    if (data.productId) {
+      await this.validateProductId(data.productId);
+    }
+
     const updated = await this.repository.update(id, userId, data);
     return sanitizeWeightFlock(updated!);
   }
@@ -66,5 +77,12 @@ export class WeightFlocksService {
     }
 
     await this.repository.delete(id, userId);
+  }
+
+  private async validateProductId(productId: number): Promise<void> {
+    const product = await this.standardsRepository.findProductById(productId);
+    if (!product) {
+      throw new AppError(400, 'Invalid product_id: product not found');
+    }
   }
 }
