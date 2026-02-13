@@ -87,8 +87,24 @@ export class AdminUsersController {
   ): Promise<void> => {
     try {
       const id = parseInt(req.params.id, 10);
-      const { fullname, email, role } = req.body;
-      const user = await this.service.updateUser(id, { fullname, email, role });
+      const {
+        fullname,
+        email,
+        role,
+        company,
+        country,
+        nutritionAvailable,
+        nutrition_available,
+      } = req.body;
+      const nutritionAvailableValue = nutritionAvailable ?? nutrition_available;
+      const user = await this.service.updateUser(id, {
+        fullname,
+        email,
+        role,
+        company,
+        country,
+        nutrition_available: nutritionAvailableValue,
+      });
 
       res.status(200).json({
         success: true,

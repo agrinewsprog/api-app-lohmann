@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { weightProductsService } from './weightProducts.service';
+import { Request, Response, NextFunction } from "express";
+import { weightProductsService } from "./weightProducts.service";
 
 class WeightProductsController {
   getProducts = async (
@@ -25,7 +25,7 @@ class WeightProductsController {
       const result = await weightProductsService.getProductById(productId);
       res.json({
         success: true,
-        product: result.product,
+        item: result.product,
         standards: result.standards,
       });
     } catch (error) {
@@ -41,9 +41,13 @@ class WeightProductsController {
     try {
       const productId = parseInt(req.params.productId, 10);
       const week = parseInt(req.query.week as string, 10);
-      const sex = req.query.sex as 'female' | 'male';
+      const sex = req.query.sex as "female" | "male";
 
-      const standard = await weightProductsService.getStandardByWeek(productId, week, sex);
+      const standard = await weightProductsService.getStandardByWeek(
+        productId,
+        week,
+        sex,
+      );
       res.json({ success: true, item: standard });
     } catch (error) {
       next(error);

@@ -8,23 +8,27 @@ export class AuthRepository {
     email: string,
     passwordHash: string,
     role: "admin" | "user" = "user",
+    country: string | null = null,
+    company: string | null = null,
   ): Promise<number> {
     const sql = `
-      INSERT INTO users (fullname, email, password_hash, role)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO users (fullname, email, password_hash, role, country, company)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
     const [result] = await query<ResultSetHeader>(sql, [
       fullname,
       email,
       passwordHash,
       role,
+      country,
+      company,
     ]);
     return result.insertId;
   }
 
   async findUserByEmail(email: string): Promise<User | null> {
     const sql = `
-      SELECT id, fullname, email, password_hash, role, created_at, updated_at
+      SELECT id, fullname, email, password_hash, role, country, company, created_at, updated_at
       FROM users
       WHERE email = ?
     `;
@@ -33,7 +37,7 @@ export class AuthRepository {
 
   async findUserById(id: number): Promise<User | null> {
     const sql = `
-      SELECT id, fullname, email, password_hash, role, created_at, updated_at
+      SELECT id, fullname, email, password_hash, role, country, company, created_at, updated_at
       FROM users
       WHERE id = ?
     `;
@@ -92,13 +96,18 @@ export class AuthRepository {
     await query(sql);
   }
 
-  async updateUserProfile(userId: number, fullname: string): Promise<void> {
+  async updateUserProfile(
+    userId: number,
+    fullname: string,
+    country: string | null = null,
+    company: string | null = null,
+  ): Promise<void> {
     const sql = `
       UPDATE users
-      SET fullname = ?, updated_at = NOW()
+      SET fullname = ?, country = ?, company = ?, updated_at = NOW()
       WHERE id = ?
     `;
-    await query(sql, [fullname, userId]);
+    await query(sql, [fullname, country, company, userId]);
   }
 
   async updateUserPassword(

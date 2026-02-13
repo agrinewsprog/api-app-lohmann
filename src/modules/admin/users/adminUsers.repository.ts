@@ -10,7 +10,7 @@ export class AdminUsersRepository {
     role?: "admin" | "user",
   ): Promise<User[]> {
     let sql = `
-      SELECT id, fullname, email, password_hash, role, created_at, updated_at
+      SELECT id, fullname, email, password_hash, role, country, company, nutrition_available, created_at, updated_at
       FROM users
       WHERE 1=1
     `;
@@ -56,7 +56,7 @@ export class AdminUsersRepository {
 
   async findById(id: number): Promise<User | null> {
     const sql = `
-      SELECT id, fullname, email, password_hash, role, created_at, updated_at
+      SELECT id, fullname, email, password_hash, role, company, country, nutrition_available, created_at, updated_at
       FROM users
       WHERE id = ?
     `;
@@ -65,7 +65,7 @@ export class AdminUsersRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     const sql = `
-      SELECT id, fullname, email, password_hash, role, created_at, updated_at
+      SELECT id, fullname, email, password_hash, role, company, country, nutrition_available, created_at, updated_at
       FROM users
       WHERE email = ?
     `;
@@ -76,16 +76,22 @@ export class AdminUsersRepository {
     fullname: string,
     email: string,
     passwordHash: string,
-    role: "admin" | "user",
+    company?: string,
+    country?: string,
+    nutrition_available?: boolean,
+    role: "admin" | "user" = "user",
   ): Promise<User> {
     const sql = `
-      INSERT INTO users (fullname, email, password_hash, role)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO users (fullname, email, password_hash, company, country, nutrition_available, role)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
     const [result] = await query<ResultSetHeader>(sql, [
       fullname,
       email,
       passwordHash,
+      company || null,
+      country || null,
+      nutrition_available ? 1 : 0,
       role,
     ]);
     const created = await this.findById(result.insertId);
@@ -94,11 +100,18 @@ export class AdminUsersRepository {
 
   async update(
     id: number,
-    data: { fullname?: string; email?: string; role?: "admin" | "user" },
+    data: {
+      fullname?: string;
+      email?: string;
+      role?: "admin" | "user";
+      company?: string;
+      country?: string;
+      nutrition_available?: boolean;
+    },
   ): Promise<User | null> {
     const fields: string[] = [];
     const values: (string | number)[] = [];
-
+    console.log("Updating user with data:", data);
     if (data.fullname !== undefined) {
       fields.push("fullname = ?");
       values.push(data.fullname);
@@ -110,6 +123,18 @@ export class AdminUsersRepository {
     if (data.role !== undefined) {
       fields.push("role = ?");
       values.push(data.role);
+    }
+    if (data.nutrition_available !== undefined) {
+      fields.push("nutrition_available = ?");
+      values.push(data.nutrition_available ? 1 : 0);
+    }
+    if (data.company !== undefined) {
+      fields.push("company = ?");
+      values.push(data.company);
+    }
+    if (data.country !== undefined) {
+      fields.push("country = ?");
+      values.push(data.country);
     }
 
     if (fields.length === 0) {

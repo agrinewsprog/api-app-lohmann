@@ -4,6 +4,9 @@ export interface User {
   email: string;
   password_hash: string;
   role: "admin" | "user";
+  country?: string;
+  company?: string;
+  nutrition_available?: boolean;
   created_at: Date;
   updated_at: Date;
 }
@@ -13,6 +16,9 @@ export interface UserResponse {
   fullname: string;
   email: string;
   role: "admin" | "user";
+  country?: string;
+  company?: string;
+  nutrition_available?: boolean;
   created_at: Date;
   updated_at: Date;
 }
@@ -21,6 +27,8 @@ export interface RegisterRequest {
   fullname: string;
   email: string;
   password: string;
+  country?: string;
+  company?: string;
 }
 
 export interface LoginRequest {
@@ -38,6 +46,8 @@ export interface LogoutRequest {
 
 export interface UpdateProfileRequest {
   fullname: string;
+  company?: string;
+  country?: string;
 }
 
 export interface ChangePasswordRequest {
@@ -70,6 +80,9 @@ export function sanitizeUser(user: User): UserResponse {
     id: user.id,
     fullname: user.fullname,
     email: user.email,
+    country: user.country,
+    company: user.company,
+    nutrition_available: user.nutrition_available,
     role: user.role,
     created_at: user.created_at,
     updated_at: user.updated_at,

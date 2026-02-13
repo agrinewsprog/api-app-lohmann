@@ -78,6 +78,8 @@ export class AuthService {
       data.email,
       passwordHash,
       "user",
+      data.country,
+      data.company,
     );
 
     const user = await this.authRepository.findUserById(userId);
@@ -208,7 +210,12 @@ export class AuthService {
       throw new AppError(404, "User not found");
     }
 
-    await this.authRepository.updateUserProfile(userId, data.fullname);
+    await this.authRepository.updateUserProfile(
+      userId,
+      data.fullname,
+      data.country,
+      data.company,
+    );
 
     const updatedUser = await this.authRepository.findUserById(userId);
 
