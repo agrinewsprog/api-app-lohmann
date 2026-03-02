@@ -4,6 +4,8 @@ export interface WeightFlock {
   name: string;
   location: string | null;
   notes: string | null;
+  product_id: number | null;
+  hatch_date: string | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -14,6 +16,8 @@ export interface AdminWeightFlockResponse {
   name: string;
   location: string | null;
   notes: string | null;
+  product_id: number | null;
+  hatch_date: string | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -49,6 +53,8 @@ export function sanitizeAdminWeightFlock(flock: WeightFlock): AdminWeightFlockRe
     name: flock.name,
     location: flock.location,
     notes: flock.notes,
+    product_id: flock.product_id,
+    hatch_date: flock.hatch_date,
     created_at: flock.created_at,
     updated_at: flock.updated_at,
   };

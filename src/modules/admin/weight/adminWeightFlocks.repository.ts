@@ -10,7 +10,7 @@ export class AdminWeightFlocksRepository {
     search?: string
   ): Promise<WeightFlock[]> {
     let sql = `
-      SELECT id, user_id, name, location, notes, created_at, updated_at
+      SELECT id, user_id, name, location, notes, product_id, hatch_date, created_at, updated_at
       FROM weight_flocks
       WHERE 1=1
     `;
@@ -53,7 +53,7 @@ export class AdminWeightFlocksRepository {
 
   async findById(id: number): Promise<WeightFlock | null> {
     const sql = `
-      SELECT id, user_id, name, location, notes, created_at, updated_at
+      SELECT id, user_id, name, location, notes, product_id, hatch_date, created_at, updated_at
       FROM weight_flocks
       WHERE id = ?
     `;
@@ -62,7 +62,7 @@ export class AdminWeightFlocksRepository {
 
   async findByNameAndUserId(name: string, userId: number): Promise<WeightFlock | null> {
     const sql = `
-      SELECT id, user_id, name, location, notes, created_at, updated_at
+      SELECT id, user_id, name, location, notes, product_id, hatch_date, created_at, updated_at
       FROM weight_flocks
       WHERE name = ? AND user_id = ?
     `;

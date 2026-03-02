@@ -111,7 +111,7 @@ export class AdminUsersRepository {
   ): Promise<User | null> {
     const fields: string[] = [];
     const values: (string | number)[] = [];
-    console.log("Updating user with data:", data);
+
     if (data.fullname !== undefined) {
       fields.push("fullname = ?");
       values.push(data.fullname);

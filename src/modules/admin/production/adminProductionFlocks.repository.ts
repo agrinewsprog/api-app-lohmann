@@ -14,7 +14,7 @@ export class AdminProductionFlocksRepository {
     search?: string,
   ): Promise<ProductionFlock[]> {
     let sql = `
-      SELECT id, user_id, name, location, notes, created_at, updated_at
+      SELECT id, user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes, created_at, updated_at
       FROM production_flocks
       WHERE 1=1
     `;
@@ -63,7 +63,7 @@ export class AdminProductionFlocksRepository {
 
   async findById(id: number): Promise<ProductionFlock | null> {
     const sql = `
-      SELECT id, user_id, name, location, notes, created_at, updated_at
+      SELECT id, user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes, created_at, updated_at
       FROM production_flocks
       WHERE id = ?
     `;
@@ -75,7 +75,7 @@ export class AdminProductionFlocksRepository {
     userId: number,
   ): Promise<ProductionFlock | null> {
     const sql = `
-      SELECT id, user_id, name, location, notes, created_at, updated_at
+      SELECT id, user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes, created_at, updated_at
       FROM production_flocks
       WHERE name = ? AND user_id = ?
     `;
@@ -84,12 +84,17 @@ export class AdminProductionFlocksRepository {
 
   async create(data: AdminCreateProductionFlockDTO): Promise<ProductionFlock> {
     const sql = `
-      INSERT INTO production_flocks (user_id, name, location, notes)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO production_flocks (user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const [result] = await query<ResultSetHeader>(sql, [
       data.userId,
       data.name,
+      data.flockNumber || null,
+      data.hatchDate || null,
+      data.hensHoused ?? 0,
+      data.productionPeriod ?? 72,
+      data.productId || null,
       data.location || null,
       data.notes || null,
     ]);
@@ -108,6 +113,26 @@ export class AdminProductionFlocksRepository {
     if (data.name !== undefined) {
       fields.push("name = ?");
       values.push(data.name);
+    }
+    if (data.flockNumber !== undefined) {
+      fields.push("flock_number = ?");
+      values.push(data.flockNumber || null);
+    }
+    if (data.hatchDate !== undefined) {
+      fields.push("hatch_date = ?");
+      values.push(data.hatchDate || null);
+    }
+    if (data.hensHoused !== undefined) {
+      fields.push("hens_housed = ?");
+      values.push(data.hensHoused);
+    }
+    if (data.productionPeriod !== undefined) {
+      fields.push("production_period = ?");
+      values.push(data.productionPeriod);
+    }
+    if (data.productId !== undefined) {
+      fields.push("product_id = ?");
+      values.push(data.productId || null);
     }
     if (data.location !== undefined) {
       fields.push("location = ?");

@@ -51,6 +51,35 @@ export const createFlockValidation = [
     .isLength({ min: 1, max: 120 })
     .withMessage('Flock name must be between 1 and 120 characters'),
 
+  body('flockNumber')
+    .optional()
+    .trim()
+    .isLength({ max: 50 })
+    .withMessage('Flock number must not exceed 50 characters'),
+
+  body('hatchDate')
+    .optional()
+    .isISO8601()
+    .withMessage('Hatch date must be a valid date (YYYY-MM-DD)'),
+
+  body('hensHoused')
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage('Hens housed must be a non-negative integer')
+    .toInt(),
+
+  body('productionPeriod')
+    .optional()
+    .isInt({ min: 1, max: 200 })
+    .withMessage('Production period must be between 1 and 200 weeks')
+    .toInt(),
+
+  body('productId')
+    .optional()
+    .isString()
+    .isLength({ min: 1, max: 36 })
+    .withMessage('Product ID must not exceed 36 characters'),
+
   body('location')
     .optional()
     .trim()
@@ -76,6 +105,35 @@ export const updateFlockValidation = [
     .trim()
     .isLength({ min: 1, max: 120 })
     .withMessage('Flock name must be between 1 and 120 characters'),
+
+  body('flockNumber')
+    .optional()
+    .trim()
+    .isLength({ max: 50 })
+    .withMessage('Flock number must not exceed 50 characters'),
+
+  body('hatchDate')
+    .optional()
+    .isISO8601()
+    .withMessage('Hatch date must be a valid date (YYYY-MM-DD)'),
+
+  body('hensHoused')
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage('Hens housed must be a non-negative integer')
+    .toInt(),
+
+  body('productionPeriod')
+    .optional()
+    .isInt({ min: 1, max: 200 })
+    .withMessage('Production period must be between 1 and 200 weeks')
+    .toInt(),
+
+  body('productId')
+    .optional()
+    .isString()
+    .isLength({ min: 1, max: 36 })
+    .withMessage('Product ID must not exceed 36 characters'),
 
   body('location')
     .optional()

@@ -13,7 +13,10 @@ import productionProductsRoutes from "./modules/production/products/productionPr
 import productionPlanningRoutes from "./modules/production/planning/productionPlanning.routes";
 import adminUsersRoutes from "./modules/admin/users/adminUsers.routes";
 import adminWeightFlocksRoutes from "./modules/admin/weight/adminWeightFlocks.routes";
+import adminWeightUniformityRoutes from "./modules/admin/weight/adminWeightUniformity.routes";
 import adminProductionFlocksRoutes from "./modules/admin/production/adminProductionFlocks.routes";
+import adminProductionRecordsRoutes from "./modules/admin/production/adminProductionRecords.routes";
+import adminProductionPlanningRoutes from "./modules/admin/production/adminProductionPlanning.routes";
 import adminStandardsRoutes from "./modules/admin/standards/adminStandards.routes";
 import weightProductsRoutes from "./modules/weight/products/weightProducts.routes";
 import weightUniformityRoutes from "./modules/weight/uniformity/weightUniformity.routes";
@@ -68,7 +71,10 @@ app.use("/api/production/planning", productionPlanningRoutes);
 // Admin routes
 app.use("/api/admin/users", adminUsersRoutes);
 app.use("/api/admin/weight/flocks", adminWeightFlocksRoutes);
+app.use("/api/admin/weight/uniformity", adminWeightUniformityRoutes);
 app.use("/api/admin/production/flocks", adminProductionFlocksRoutes);
+app.use("/api/admin/production", adminProductionRecordsRoutes);
+app.use("/api/admin/production", adminProductionPlanningRoutes);
 app.use("/api/admin/standards", adminStandardsRoutes);
 
 app.use(notFoundHandler);
