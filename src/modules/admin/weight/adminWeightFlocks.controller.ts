@@ -43,8 +43,8 @@ export class AdminWeightFlocksController {
 
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { userId, name, location, notes } = req.body;
-      const flock = await this.service.createFlock({ userId, name, location, notes });
+      const { userId, name, productId, location, notes } = req.body;
+      const flock = await this.service.createFlock({ userId, name, productId, location, notes });
 
       res.status(201).json({
         success: true,
@@ -58,8 +58,8 @@ export class AdminWeightFlocksController {
   update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = parseInt(req.params.id, 10);
-      const { name, location, notes } = req.body;
-      const flock = await this.service.updateFlock(id, { name, location, notes });
+      const { name, productId, location, notes } = req.body;
+      const flock = await this.service.updateFlock(id, { name, productId, location, notes });
 
       res.status(200).json({
         success: true,

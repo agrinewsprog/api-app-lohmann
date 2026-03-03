@@ -71,12 +71,13 @@ export class AdminWeightFlocksRepository {
 
   async create(data: AdminCreateWeightFlockDTO): Promise<WeightFlock> {
     const sql = `
-      INSERT INTO weight_flocks (user_id, name, location, notes)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO weight_flocks (user_id, name, product_id, location, notes)
+      VALUES (?, ?, ?, ?, ?)
     `;
     const [result] = await query<ResultSetHeader>(sql, [
       data.userId,
       data.name,
+      data.productId || null,
       data.location || null,
       data.notes || null,
     ]);
@@ -92,6 +93,10 @@ export class AdminWeightFlocksRepository {
     if (data.name !== undefined) {
       fields.push('name = ?');
       values.push(data.name);
+    }
+    if (data.productId !== undefined) {
+      fields.push('product_id = ?');
+      values.push(data.productId || null);
     }
     if (data.location !== undefined) {
       fields.push('location = ?');

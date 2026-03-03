@@ -25,12 +25,14 @@ export interface AdminWeightFlockResponse {
 export interface AdminCreateWeightFlockDTO {
   userId: number;
   name: string;
+  productId?: number;
   location?: string;
   notes?: string;
 }
 
 export interface AdminUpdateWeightFlockDTO {
   name?: string;
+  productId?: number;
   location?: string;
   notes?: string;
 }

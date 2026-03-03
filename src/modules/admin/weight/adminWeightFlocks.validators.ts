@@ -51,6 +51,12 @@ export const createFlockValidation = [
     .isLength({ min: 1, max: 120 })
     .withMessage('Flock name must be between 1 and 120 characters'),
 
+  body('productId')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('Product ID must be a positive integer')
+    .toInt(),
+
   body('location')
     .optional()
     .trim()
@@ -76,6 +82,12 @@ export const updateFlockValidation = [
     .trim()
     .isLength({ min: 1, max: 120 })
     .withMessage('Flock name must be between 1 and 120 characters'),
+
+  body('productId')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('Product ID must be a positive integer')
+    .toInt(),
 
   body('location')
     .optional()
