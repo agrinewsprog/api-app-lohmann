@@ -8,6 +8,7 @@ export class ProductionFlocksRepository {
       SELECT
         f.id, f.user_id, f.farm_id, f.name, f.flock_number, f.hatch_date,
         f.hens_housed, f.production_period, f.product_id, f.location, f.notes,
+        f.initial_mortality_pct, f.eggs_pct, f.hatching_eggs_pct, f.chicks_pct,
         f.created_at, f.updated_at,
         pf.name as farm_name
       FROM production_flocks f
@@ -32,6 +33,7 @@ export class ProductionFlocksRepository {
       SELECT
         f.id, f.user_id, f.farm_id, f.name, f.flock_number, f.hatch_date,
         f.hens_housed, f.production_period, f.product_id, f.location, f.notes,
+        f.initial_mortality_pct, f.eggs_pct, f.hatching_eggs_pct, f.chicks_pct,
         f.created_at, f.updated_at,
         pf.name as farm_name
       FROM production_flocks f
@@ -45,6 +47,7 @@ export class ProductionFlocksRepository {
     const sql = `
       SELECT id, user_id, farm_id, name, flock_number, hatch_date,
         hens_housed, production_period, product_id, location, notes,
+        initial_mortality_pct, eggs_pct, hatching_eggs_pct, chicks_pct,
         created_at, updated_at
       FROM production_flocks
       WHERE name = ? AND user_id = ?
@@ -55,8 +58,9 @@ export class ProductionFlocksRepository {
   async create(userId: number, data: CreateProductionFlockDTO): Promise<ProductionFlockWithFarm> {
     const sql = `
       INSERT INTO production_flocks
-        (user_id, farm_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (user_id, farm_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes,
+         initial_mortality_pct, eggs_pct, hatching_eggs_pct, chicks_pct)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const [result] = await query<ResultSetHeader>(sql, [
       userId,
@@ -69,6 +73,10 @@ export class ProductionFlocksRepository {
       data.productId || null,
       data.location || null,
       data.notes || null,
+      data.initialMortalityPct ?? null,
+      data.eggsPct ?? null,
+      data.hatchingEggsPct ?? null,
+      data.chicksPct ?? null,
     ]);
 
     const created = await this.findByIdAndUserId(result.insertId, userId);
@@ -114,6 +122,22 @@ export class ProductionFlocksRepository {
     if (data.notes !== undefined) {
       fields.push('notes = ?');
       values.push(data.notes || null);
+    }
+    if (data.initialMortalityPct !== undefined) {
+      fields.push('initial_mortality_pct = ?');
+      values.push(data.initialMortalityPct ?? null);
+    }
+    if (data.eggsPct !== undefined) {
+      fields.push('eggs_pct = ?');
+      values.push(data.eggsPct ?? null);
+    }
+    if (data.hatchingEggsPct !== undefined) {
+      fields.push('hatching_eggs_pct = ?');
+      values.push(data.hatchingEggsPct ?? null);
+    }
+    if (data.chicksPct !== undefined) {
+      fields.push('chicks_pct = ?');
+      values.push(data.chicksPct ?? null);
     }
 
     if (fields.length === 0) {

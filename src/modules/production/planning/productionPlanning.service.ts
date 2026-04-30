@@ -9,6 +9,7 @@ import {
   PlanningRow,
 } from "./productionPlanning.types";
 import { formatISOWeekPeriod, addDays } from "./productionPlanning.utils";
+import { formatLocalDate } from "../../../utils/date";
 
 export class ProductionPlanningService {
   private flocksRepository: ProductionFlocksRepository;
@@ -76,14 +77,26 @@ export class ProductionPlanningService {
     const rows: PlanningRow[] = [];
     const hatchDate = new Date(flock.hatch_date);
     const productionPeriod = flock.production_period;
-    const hensHoused = flock.hens_housed;
+
+    // Advanced settings (null = use breed standard curve)
+    const initialMortalityPct = flock.initial_mortality_pct ?? 0;
+    const eggsPctFactor = (flock.eggs_pct ?? 100) / 100;
+    const hatchingEggsPctOverride = flock.hatching_eggs_pct ?? null;
+    const chicksPctOverride = flock.chicks_pct ?? null;
+
+    // Apply initial mortality once to hens housed
+    const hensAlive = Math.round(flock.hens_housed * (1 - initialMortalityPct / 100));
 
     // Track the last valid standard for carry-forward strategy
     let lastValidStandard: StandardGrowthRow | null = null;
 
-    // Generate rows from startWeek to startWeek + productionPeriod (inclusive)
-    for (let i = 0; i <= productionPeriod; i++) {
-      const rowWeek = startWeek + i;
+    // Cumulative accumulators for advanced-settings mode (no standard cum values available)
+    let hatchingEggsCumAcc = 0;
+    let saleableChicksCumAcc = 0;
+
+    // Generate rows from startWeek to productionPeriod (end week of life, inclusive)
+    for (let rowWeek = startWeek; rowWeek <= productionPeriod; rowWeek++) {
+      const i = rowWeek - startWeek; // weekIndex (0-based)
 
       // Get standard for this week, or use carry-forward
       let standard = standardsMap.get(rowWeek);
@@ -91,51 +104,55 @@ export class ProductionPlanningService {
       if (standard) {
         lastValidStandard = standard;
       } else if (lastValidStandard) {
-        // Carry-forward: use last available standard
         standard = lastValidStandard;
       }
 
       // Calculate the period date based on offset from hatch date
-      // rowWeek is the standard week, i is the period index (0-based)
       const periodStartDate = addDays(hatchDate, rowWeek * 7);
       const period = formatISOWeekPeriod(periodStartDate);
 
-      // Calculate values
       const hdPct = standard?.hd_pct_production ?? null;
       const hhPct = standard?.hh_pct_production ?? null;
-      const heWeek = standard?.he_week ?? null;
-      const heCum = standard?.he_cum ?? null;
-      const saleableChicksWeekVal = standard?.saleable_chicks_week ?? null;
-      const saleableChicksCumVal = standard?.saleable_chicks_cum ?? null;
 
-      // eggsWeek = hensHoused * (hd_pct_production / 100) * 7
-      // If hd_pct_production is null, use hh_pct_production. If both null, 0
+      // Total eggs: apply eggsPct multiplier on top of breed standard
       const pctProduction = hdPct ?? hhPct ?? 0;
-      const eggs = Math.round(hensHoused * (pctProduction / 100) * 7);
+      const eggs = Math.round(hensAlive * (pctProduction / 100) * 7 * eggsPctFactor);
 
-      // hatchingEggsWeek = hensHoused * he_week (he_week is already a per-hen value)
-      const hatchingEggs =
-        heWeek !== null ? Math.round(hensHoused * heWeek) : 0;
+      let hatchingEggs: number;
+      let saleableChicks: number;
+      let hatchingEggsCum: number;
+      let saleableChicksCum: number;
 
-      // saleableChicksWeek = hensHoused * saleable_chicks_week
-      const saleableChicks =
-        saleableChicksWeekVal !== null
-          ? Math.round(hensHoused * saleableChicksWeekVal)
-          : 0;
+      if (hatchingEggsPctOverride !== null || chicksPctOverride !== null) {
+        // Advanced mode: flat % overrides replace per-week standard curves
+        const hePct = hatchingEggsPctOverride ?? (standard?.pct_hatching_eggs ?? 0);
+        const chPct = chicksPctOverride ?? (standard?.saleable_pct_hatch ?? 0);
 
-      // Cumulative values
-      const hatchingEggsCum =
-        heCum !== null ? Math.round(hensHoused * heCum) : 0;
-      const saleableChicksCum =
-        saleableChicksCumVal !== null
-          ? Math.round(hensHoused * saleableChicksCumVal)
-          : 0;
+        hatchingEggs = Math.round(eggs * (hePct / 100));
+        saleableChicks = Math.round(hatchingEggs * (chPct / 100));
+
+        hatchingEggsCumAcc += hatchingEggs;
+        saleableChicksCumAcc += saleableChicks;
+        hatchingEggsCum = hatchingEggsCumAcc;
+        saleableChicksCum = saleableChicksCumAcc;
+      } else {
+        // Standard mode: use per-week values from breed standard
+        const heWeek = standard?.he_week ?? null;
+        const heCum = standard?.he_cum ?? null;
+        const saleableChicksWeekVal = standard?.saleable_chicks_week ?? null;
+        const saleableChicksCumVal = standard?.saleable_chicks_cum ?? null;
+
+        hatchingEggs = heWeek !== null ? Math.round(hensAlive * heWeek) : 0;
+        saleableChicks = saleableChicksWeekVal !== null ? Math.round(hensAlive * saleableChicksWeekVal) : 0;
+        hatchingEggsCum = heCum !== null ? Math.round(hensAlive * heCum) : 0;
+        saleableChicksCum = saleableChicksCumVal !== null ? Math.round(hensAlive * saleableChicksCumVal) : 0;
+      }
 
       rows.push({
         period,
         weekIndex: i,
         standardWeek: rowWeek,
-        hensHoused,
+        hensHoused: hensAlive,
         eggs,
         hatchingEggs,
         saleableChicks,
@@ -150,7 +167,7 @@ export class ProductionPlanningService {
       flock: {
         id: flock.id,
         name: flock.name,
-        hatchDate: flock.hatch_date.toISOString().split("T")[0],
+        hatchDate: formatLocalDate(flock.hatch_date),
         hensHoused: flock.hens_housed,
         productionPeriod: flock.production_period,
         farmId: flock.farm_id,

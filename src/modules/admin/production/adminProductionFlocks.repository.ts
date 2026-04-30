@@ -14,7 +14,8 @@ export class AdminProductionFlocksRepository {
     search?: string,
   ): Promise<ProductionFlock[]> {
     let sql = `
-      SELECT id, user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes, created_at, updated_at
+      SELECT id, user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes,
+             initial_mortality_pct, eggs_pct, hatching_eggs_pct, chicks_pct, created_at, updated_at
       FROM production_flocks
       WHERE 1=1
     `;
@@ -63,7 +64,8 @@ export class AdminProductionFlocksRepository {
 
   async findById(id: number): Promise<ProductionFlock | null> {
     const sql = `
-      SELECT id, user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes, created_at, updated_at
+      SELECT id, user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes,
+             initial_mortality_pct, eggs_pct, hatching_eggs_pct, chicks_pct, created_at, updated_at
       FROM production_flocks
       WHERE id = ?
     `;
@@ -75,7 +77,8 @@ export class AdminProductionFlocksRepository {
     userId: number,
   ): Promise<ProductionFlock | null> {
     const sql = `
-      SELECT id, user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes, created_at, updated_at
+      SELECT id, user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes,
+             initial_mortality_pct, eggs_pct, hatching_eggs_pct, chicks_pct, created_at, updated_at
       FROM production_flocks
       WHERE name = ? AND user_id = ?
     `;
@@ -84,8 +87,9 @@ export class AdminProductionFlocksRepository {
 
   async create(data: AdminCreateProductionFlockDTO): Promise<ProductionFlock> {
     const sql = `
-      INSERT INTO production_flocks (user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO production_flocks (user_id, name, flock_number, hatch_date, hens_housed, production_period, product_id, location, notes,
+                                     initial_mortality_pct, eggs_pct, hatching_eggs_pct, chicks_pct)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const [result] = await query<ResultSetHeader>(sql, [
       data.userId,
@@ -97,6 +101,10 @@ export class AdminProductionFlocksRepository {
       data.productId || null,
       data.location || null,
       data.notes || null,
+      data.initialMortalityPct ?? null,
+      data.eggsPct ?? null,
+      data.hatchingEggsPct ?? null,
+      data.chicksPct ?? null,
     ]);
 
     const created = await this.findById(result.insertId);
@@ -141,6 +149,22 @@ export class AdminProductionFlocksRepository {
     if (data.notes !== undefined) {
       fields.push("notes = ?");
       values.push(data.notes || null);
+    }
+    if (data.initialMortalityPct !== undefined) {
+      fields.push("initial_mortality_pct = ?");
+      values.push(data.initialMortalityPct ?? null);
+    }
+    if (data.eggsPct !== undefined) {
+      fields.push("eggs_pct = ?");
+      values.push(data.eggsPct ?? null);
+    }
+    if (data.hatchingEggsPct !== undefined) {
+      fields.push("hatching_eggs_pct = ?");
+      values.push(data.hatchingEggsPct ?? null);
+    }
+    if (data.chicksPct !== undefined) {
+      fields.push("chicks_pct = ?");
+      values.push(data.chicksPct ?? null);
     }
 
     if (fields.length === 0) {

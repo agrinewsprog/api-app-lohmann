@@ -16,7 +16,7 @@ export interface PlanningExecuteResponse {
   flock: {
     id: number;
     name: string;
-    hatchDate: string;
+    hatchDate: string | null;
     hensHoused: number;
     productionPeriod: number;
     farmId: number | null;

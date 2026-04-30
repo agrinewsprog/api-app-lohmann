@@ -44,13 +44,15 @@ export class ProductionFlocksController {
       const {
         farmId, name, flockNumber, hatchDate,
         hensHoused, productionPeriod, productId,
-        location, notes
+        location, notes,
+        initialMortalityPct, eggsPct, hatchingEggsPct, chicksPct
       } = req.body;
 
       const flock = await this.service.createFlock(userId, {
         farmId, name, flockNumber, hatchDate,
         hensHoused, productionPeriod, productId,
-        location, notes
+        location, notes,
+        initialMortalityPct, eggsPct, hatchingEggsPct, chicksPct
       });
 
       res.status(201).json({
@@ -69,13 +71,15 @@ export class ProductionFlocksController {
       const {
         farmId, name, flockNumber, hatchDate,
         hensHoused, productionPeriod, productId,
-        location, notes
+        location, notes,
+        initialMortalityPct, eggsPct, hatchingEggsPct, chicksPct
       } = req.body;
 
       const flock = await this.service.updateFlock(id, userId, {
         farmId, name, flockNumber, hatchDate,
         hensHoused, productionPeriod, productId,
-        location, notes
+        location, notes,
+        initialMortalityPct, eggsPct, hatchingEggsPct, chicksPct
       });
 
       res.status(200).json({

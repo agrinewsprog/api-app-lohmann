@@ -43,8 +43,10 @@ export class AdminProductionFlocksController {
 
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { userId, name, flockNumber, hatchDate, hensHoused, productionPeriod, productId, location, notes } = req.body;
-      const flock = await this.service.createFlock({ userId, name, flockNumber, hatchDate, hensHoused, productionPeriod, productId, location, notes });
+      const { userId, name, flockNumber, hatchDate, hensHoused, productionPeriod, productId, location, notes,
+              initialMortalityPct, eggsPct, hatchingEggsPct, chicksPct } = req.body;
+      const flock = await this.service.createFlock({ userId, name, flockNumber, hatchDate, hensHoused, productionPeriod, productId, location, notes,
+        initialMortalityPct, eggsPct, hatchingEggsPct, chicksPct });
 
       res.status(201).json({
         success: true,
@@ -58,8 +60,10 @@ export class AdminProductionFlocksController {
   update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = parseInt(req.params.id, 10);
-      const { name, flockNumber, hatchDate, hensHoused, productionPeriod, productId, location, notes } = req.body;
-      const flock = await this.service.updateFlock(id, { name, flockNumber, hatchDate, hensHoused, productionPeriod, productId, location, notes });
+      const { name, flockNumber, hatchDate, hensHoused, productionPeriod, productId, location, notes,
+              initialMortalityPct, eggsPct, hatchingEggsPct, chicksPct } = req.body;
+      const flock = await this.service.updateFlock(id, { name, flockNumber, hatchDate, hensHoused, productionPeriod, productId, location, notes,
+        initialMortalityPct, eggsPct, hatchingEggsPct, chicksPct });
 
       res.status(200).json({
         success: true,

@@ -41,7 +41,13 @@ api/
 │       ├── 003_create_standards_products_table.sql
 │       ├── 004_create_standards_growth_table.sql
 │       ├── 005_create_weight_flocks_table.sql
-│       └── 006_create_production_flocks_table.sql
+│       ├── 006_create_production_flocks_table.sql
+│       ├── 007_create_production_farms_table.sql
+│       ├── 008_alter_production_flocks_table.sql
+│       ├── 009_alter_standards_growth_add_columns.sql
+│       ├── 010_alter_weight_flocks_add_product_and_hatch.sql
+│       ├── 011_create_weight_measurements_table.sql
+│       └── 012_alter_production_flocks_add_advanced_settings.sql
 ├── src/
 │   ├── config/
 │   │   └── env.ts
@@ -261,6 +267,89 @@ CREATE TABLE IF NOT EXISTS production_flocks (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
+**Migration 7: Production Farms Table** (`database/migrations/007_create_production_farms_table.sql`)
+
+```sql
+CREATE TABLE IF NOT EXISTS production_farms (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(120) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_prod_farms_user (user_id),
+    UNIQUE KEY uq_prod_farms_user_name (user_id, name),
+    CONSTRAINT fk_production_farms_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+**Migration 8: Alter Production Flocks — Add Farm & Planning Fields** (`database/migrations/008_alter_production_flocks_table.sql`)
+
+```sql
+ALTER TABLE production_flocks
+    ADD COLUMN IF NOT EXISTS farm_id BIGINT NULL AFTER user_id,
+    ADD COLUMN IF NOT EXISTS flock_number VARCHAR(50) NULL AFTER name,
+    ADD COLUMN IF NOT EXISTS hatch_date DATE NULL AFTER flock_number,
+    ADD COLUMN IF NOT EXISTS hens_housed INT NOT NULL DEFAULT 0 AFTER hatch_date,
+    ADD COLUMN IF NOT EXISTS production_period INT NOT NULL DEFAULT 72 AFTER hens_housed,
+    ADD COLUMN IF NOT EXISTS product_id CHAR(36) NULL AFTER production_period;
+```
+
+**Migration 9: Alter Standards Growth — Add Production Columns** (`database/migrations/009_alter_standards_growth_add_columns.sql`)
+
+```sql
+ALTER TABLE standards_growth
+    ADD COLUMN livability DOUBLE NULL,
+    ADD COLUMN hh_pct_production DOUBLE NULL,
+    ADD COLUMN hd_pct_production DOUBLE NULL,
+    ADD COLUMN he_week DOUBLE NULL,
+    ADD COLUMN saleable_chicks_week DOUBLE NULL;
+    -- (plus additional production metric columns)
+```
+
+**Migration 10: Alter Weight Flocks — Add Product & Hatch Date** (`database/migrations/010_alter_weight_flocks_add_product_and_hatch.sql`)
+
+```sql
+ALTER TABLE weight_flocks
+  ADD COLUMN product_id INT NULL AFTER notes,
+  ADD COLUMN hatch_date DATE NULL AFTER product_id,
+  ADD CONSTRAINT fk_weight_flocks_product FOREIGN KEY (product_id) REFERENCES standards_products(id) ON DELETE SET NULL;
+```
+
+**Migration 11: Create Weight Measurements Table** (`database/migrations/011_create_weight_measurements_table.sql`)
+
+```sql
+CREATE TABLE IF NOT EXISTS weight_measurements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    flock_id INT NOT NULL,
+    user_id INT NOT NULL,
+    week INT NOT NULL,
+    sex ENUM('female','male') NOT NULL,
+    weights JSON NOT NULL,
+    sample_count INT NOT NULL,
+    mean_weight DECIMAL(10,2) NOT NULL,
+    std_dev DECIMAL(10,2) NOT NULL,
+    cv DECIMAL(6,2) NOT NULL,
+    uniformity DECIMAL(6,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_measurement (flock_id, week, sex),
+    CONSTRAINT fk_weight_measurements_flock FOREIGN KEY (flock_id) REFERENCES weight_flocks(id) ON DELETE CASCADE,
+    CONSTRAINT fk_weight_measurements_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+**Migration 12: Alter Production Flocks — Add Advanced Settings** (`database/migrations/012_alter_production_flocks_add_advanced_settings.sql`)
+
+```sql
+ALTER TABLE production_flocks
+  ADD COLUMN initial_mortality_pct DECIMAL(5,2) NULL DEFAULT NULL,
+  ADD COLUMN eggs_pct              DECIMAL(5,2) NULL DEFAULT NULL,
+  ADD COLUMN hatching_eggs_pct     DECIMAL(5,2) NULL DEFAULT NULL,
+  ADD COLUMN chicks_pct            DECIMAL(5,2) NULL DEFAULT NULL;
+```
+
+`NULL` in any of these columns means "use the breed standard curve for that metric".
+
 ### 4. Start the Server
 
 **Development mode** (with auto-reload):
@@ -356,10 +445,15 @@ GET /health
 | GET | `/api/weight/uniformity/:uuid` | Get uniformity by UUID | Yes |
 | GET | `/api/weight/uniformity/:uuid/week` | Get week setup by uniformityUuid | Yes |
 | GET | `/api/production/flocks` | List user's production flocks | Yes |
-| GET | `/api/production/flocks/:id` | Get production flock | Yes |
+| GET | `/api/production/flocks/:id` | Get production flock (includes advancedSettings) | Yes |
 | POST | `/api/production/flocks` | Create production flock | Yes |
-| PUT | `/api/production/flocks/:id` | Update production flock | Yes |
+| PUT | `/api/production/flocks/:id` | Update production flock (including advanced settings) | Yes |
 | DELETE | `/api/production/flocks/:id` | Delete production flock | Yes |
+| GET | `/api/production/planning/execute?flockId=ID` | Execute production plan for a flock | Yes |
+| GET | `/api/production/farms` | List user's farms | Yes |
+| POST | `/api/production/farms` | Create farm | Yes |
+| PUT | `/api/production/farms/:id` | Update farm | Yes |
+| DELETE | `/api/production/farms/:id` | Delete farm | Yes |
 
 ### Admin Endpoints
 
@@ -411,12 +505,35 @@ All admin endpoints require `Authorization: Bearer <accessToken>` with an admin 
 | POST | `/api/admin/production/flocks` | Create production flock (requires userId) |
 | PUT | `/api/admin/production/flocks/:id` | Update production flock |
 | DELETE | `/api/admin/production/flocks/:id` | Delete production flock |
+| GET | `/api/admin/production/planning/execute?flockId=ID` | Execute production plan (admin, any flock) |
 
 **Query Parameters for List:**
 - `page` (default: 1)
 - `pageSize` (default: 20, max: 100)
 - `userId` (filter by user)
 - `search` (search by name)
+
+**Advanced Settings Fields** (optional on create/update, `null` = use breed standard):
+
+| Field | Range | Description |
+|-------|-------|-------------|
+| `initialMortalityPct` | 0–100 | Flat % mortality applied once to hens housed |
+| `eggsPct` | 0–200 | Egg production as % of breed standard (100 = standard) |
+| `hatchingEggsPct` | 0–100 | % of total eggs set for hatching |
+| `chicksPct` | 0–100 | % of hatching eggs that become saleable chicks |
+
+All flock responses include an `advancedSettings` object:
+```json
+{
+  "advancedSettings": {
+    "initialMortalityPct": 5,
+    "eggsPct": 97,
+    "hatchingEggsPct": 75,
+    "chicksPct": 80
+  }
+}
+```
+`null` in any field → breed standard curve used for that metric.
 
 ---
 
@@ -653,10 +770,39 @@ curl -X POST http://localhost:8089/api/admin/production/flocks \
   -H "Content-Type: application/json" \
   -d '{
     "userId": 1,
-    "name": "Production Flock A",
+    "name": "Flock A",
+    "flockNumber": "FL-001",
+    "hatchDate": "2025-01-15",
+    "hensHoused": 28500,
+    "productionPeriod": 72,
+    "productId": "23",
     "location": "Barn 3",
-    "notes": "Started February 2024"
+    "notes": "Started 2025",
+    "initialMortalityPct": 2,
+    "eggsPct": 97,
+    "hatchingEggsPct": 75,
+    "chicksPct": 80
   }'
+```
+
+**Update Advanced Settings Only:**
+```bash
+curl -X PUT http://localhost:8089/api/admin/production/flocks/9 \
+  -H "Authorization: Bearer YOUR_ADMIN_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "initialMortalityPct": 3,
+    "eggsPct": 95,
+    "hatchingEggsPct": null,
+    "chicksPct": null
+  }'
+# null resets field to breed standard
+```
+
+**Execute Planning (Admin):**
+```bash
+curl -X GET "http://localhost:8089/api/admin/production/planning/execute?flockId=9" \
+  -H "Authorization: Bearer YOUR_ADMIN_ACCESS_TOKEN"
 ```
 
 ### Standards Import
@@ -913,6 +1059,70 @@ Response:
 - Indexes are built for O(1) lookups by `userId:flockId:productId` triplet and by `uuid`
 - Week lookups within an entry are also O(1)
 - No file I/O occurs per request after initial load
+
+### Production Planning
+
+**Execute Plan:**
+```bash
+curl -X GET "http://localhost:8089/api/production/planning/execute?flockId=9" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+Response:
+```json
+{
+  "success": true,
+  "flock": {
+    "id": 9,
+    "name": "Flock A",
+    "hatchDate": "2024-01-01",
+    "hensHoused": 28500,
+    "productionPeriod": 72,
+    "farmId": 1
+  },
+  "product": {
+    "id": 23,
+    "breed": "LB Classic"
+  },
+  "startWeek": 20,
+  "rows": [
+    {
+      "period": "2024.20",
+      "weekIndex": 0,
+      "standardWeek": 20,
+      "hensHoused": 28500,
+      "eggs": 89775,
+      "hatchingEggs": 0,
+      "saleableChicks": 0,
+      "hatchingEggsCum": 0,
+      "saleableChicksCum": 0,
+      "hdPctProduction": 4.5,
+      "hhPctProduction": 4.5
+    }
+  ]
+}
+```
+
+**Planning Algorithm:**
+
+- `startWeek`: first week in `standards_growth` where `hd_pct_production > 0`. Typically week 20 for layers.
+- `productionPeriod`: end week of life (age when culled). Not a count of production weeks.
+- Rows generated for `standardWeek = startWeek` to `standardWeek = productionPeriod` (inclusive).
+- Standards read from `standards_growth` for `sex = 'female'`
+- `period` is ISO year-week format (`"2024.26"`)
+
+**Advanced Settings Calculation Chain:**
+
+```
+hensAlive       = hensHoused × (1 - initialMortalityPct / 100)   [if set, else hensHoused]
+eggs            = hensAlive × (hdPct / 100) × 7 × (eggsPct / 100) [eggsPct default 100]
+hatchingEggs    = eggs × (hatchingEggsPct / 100)                   [or per-week breed curve]
+saleableChicks  = hatchingEggs × (chicksPct / 100)                 [or per-week breed curve]
+```
+
+`null` in any advanced setting → breed standard per-week curve used for that metric.
+
+**Example:** flock with `productionPeriod = 72`, `startWeek = 20`, `initialMortalityPct = 5` → 53 rows, hens housed adjusted to 95% of original.
 
 ---
 

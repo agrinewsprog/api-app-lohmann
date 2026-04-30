@@ -1,26 +1,58 @@
-We confirmed the meaning of standards.eggs:
+# Egg Production Calculation
 
-- standards[week].eggs is NOT “eggs per hen per week”.
-- It is egg production percentage (Hen-Day Egg Production, HDEP %) for that AGE week.
+## Standards field meaning
 
-Correct calculation for a FULL 7-day week:
-eggsPeriod = hensHoused _ (standard.eggs / 100) _ 7
+`hd_pct_production` (and `hh_pct_production`) is Hen-Day Egg Production as a **percentage (0–100)**, not a decimal fraction and not "eggs per hen per week".
 
-Also: the table Period like "2026.26" is ISO calendar year-week.
-standards.week is flock AGE in weeks.
-So we MUST map calendar week -> flock ageWeek using flock housing date (or hatch date, whichever is used in the current app).
+## Egg formula
 
-Algorithm:
+```
+eggs = hensHoused × (hdPct / 100) × 7
+```
 
-1. For each calendar period (ISO year-week) get periodStartDate and periodEndDate (7 days).
-2. Compute ageDays = differenceInDays(periodStartDate, flock.housingDate).
-3. ageWeek = floor(ageDays / 7) (confirm if +1 offset is needed to match existing app)
-4. Find standard row by that ageWeek: standards.find(s => s.week === ageWeek)
-5. eggsPeriod = hensHoused _ (standard.eggs / 100) _ 7
-6. Round to integer for display (the UI shows whole eggs).
+For a full 7-day week. Result rounded to nearest integer.
 
-Important: eggsNoWeek / eggsNoHD are 0 for layers in many datasets and should NOT be used for this table.
-Use ONLY standards.eggs for this output.
+If `hd_pct_production` is null, fall back to `hh_pct_production`. If both null, eggs = 0.
 
-Please implement exactly like above and add a small unit test:
-hensHoused=28500 and standard.eggs=55 => eggsPeriod=109725 (UI may show 109726 due to rounding).
+Unit test: `hensHoused=28500`, `hdPct=55` → `eggs = 28500 × 0.55 × 7 = 109725`
+
+## Period format
+
+`period` is ISO year-week: `"2024.26"`. `standards.week` is flock **age in weeks** (not calendar week).
+
+Period date is calculated as:
+```
+periodStartDate = hatchDate + (standardWeek × 7 days)
+```
+
+## productionPeriod field
+
+`production_flocks.production_period` = **end week of life** (age in weeks when flock is culled). It is NOT a count of production weeks.
+
+## Planning algorithm
+
+1. Load `standards_growth` for the flock's `product_id`, `sex = 'female'`, ordered by `week ASC`.
+2. `startWeek` = first week where `hd_pct_production > 0` (or `hh_pct_production > 0`). Typically week 20.
+3. Generate one row per age week from `startWeek` to `productionPeriod` (inclusive).
+4. For each row:
+   - `eggs = hensHoused × (hdPct / 100) × 7`
+   - `hatchingEggs = hensHoused × he_week`
+   - `saleableChicks = hensHoused × saleable_chicks_week`
+   - `hatchingEggsCum = hensHoused × he_cum`
+   - `saleableChicksCum = hensHoused × saleable_chicks_cum`
+   - `period = ISO year-week of (hatchDate + standardWeek × 7)`
+   - `weekIndex = standardWeek - startWeek` (0-based)
+
+Example: `startWeek=20`, `productionPeriod=72` → 53 rows, age weeks 20–72. All weeks fall within `standards_growth` data range (weeks 1–75), so no carry-forward needed.
+
+## Other curves (same standards table)
+
+| Field | Description |
+|---|---|
+| `he_week` | Hatching eggs per hen per week |
+| `he_cum` | Hatching eggs cumulative per hen |
+| `saleable_chicks_week` | Saleable chicks per hen per week |
+| `saleable_chicks_cum` | Saleable chicks cumulative per hen |
+| `egg_weight_week` | Egg weight (g) |
+
+Do NOT use `eggsNoWeek` / `eggsNoHD` (always 0 for layers).

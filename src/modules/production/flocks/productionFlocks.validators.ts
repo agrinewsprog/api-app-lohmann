@@ -49,6 +49,30 @@ export const createProductionFlockValidation = [
     .optional()
     .isString()
     .withMessage('notes must be a string'),
+
+  body('initialMortalityPct')
+    .optional()
+    .isFloat({ min: 0, max: 100 })
+    .withMessage('initialMortalityPct must be between 0 and 100')
+    .toFloat(),
+
+  body('eggsPct')
+    .optional()
+    .isFloat({ min: 0, max: 200 })
+    .withMessage('eggsPct must be between 0 and 200')
+    .toFloat(),
+
+  body('hatchingEggsPct')
+    .optional()
+    .isFloat({ min: 0, max: 100 })
+    .withMessage('hatchingEggsPct must be between 0 and 100')
+    .toFloat(),
+
+  body('chicksPct')
+    .optional()
+    .isFloat({ min: 0, max: 100 })
+    .withMessage('chicksPct must be between 0 and 100')
+    .toFloat(),
 ];
 
 export const updateProductionFlockValidation = [
@@ -106,6 +130,30 @@ export const updateProductionFlockValidation = [
     .optional()
     .isString()
     .withMessage('notes must be a string'),
+
+  body('initialMortalityPct')
+    .optional({ nullable: true })
+    .isFloat({ min: 0, max: 100 })
+    .withMessage('initialMortalityPct must be between 0 and 100')
+    .toFloat(),
+
+  body('eggsPct')
+    .optional({ nullable: true })
+    .isFloat({ min: 0, max: 200 })
+    .withMessage('eggsPct must be between 0 and 200')
+    .toFloat(),
+
+  body('hatchingEggsPct')
+    .optional({ nullable: true })
+    .isFloat({ min: 0, max: 100 })
+    .withMessage('hatchingEggsPct must be between 0 and 100')
+    .toFloat(),
+
+  body('chicksPct')
+    .optional({ nullable: true })
+    .isFloat({ min: 0, max: 100 })
+    .withMessage('chicksPct must be between 0 and 100')
+    .toFloat(),
 ];
 
 export const idParamValidation = [

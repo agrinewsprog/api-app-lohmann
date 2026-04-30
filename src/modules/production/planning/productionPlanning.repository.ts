@@ -17,6 +17,7 @@ export interface StandardGrowthRow {
   saleable_chicks_cum: number | null;
   egg_weight_week: number | null;
   livability: number | null;
+  pct_hatching_eggs: number | null;
   saleable_pct_hatch: number | null;
 }
 
@@ -45,7 +46,7 @@ export class ProductionPlanningRepository {
         hh_pct_production, hd_pct_production,
         he_week, he_cum,
         saleable_chicks_week, saleable_chicks_cum,
-        egg_weight_week, livability, saleable_pct_hatch
+        egg_weight_week, livability, pct_hatching_eggs, saleable_pct_hatch
       FROM standards_growth
       WHERE product_id = ? AND sex = ?
       ORDER BY week ASC
